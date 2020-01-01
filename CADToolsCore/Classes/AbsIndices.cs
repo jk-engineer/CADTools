@@ -48,7 +48,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public static int Invoke(int index, int maxIndex = -1)
         {
-            var resultValue = 0;
+            int resultValue;
             if ((maxIndex != -1) && (System.Math.Abs(index) > System.Math.Abs(maxIndex)))
             {
                 resultValue = System.Math.Abs(maxIndex);
