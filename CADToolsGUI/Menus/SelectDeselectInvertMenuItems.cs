@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #endregion
 
 using System.Windows.Forms;
+using CADToolsGUI.Enumerators;
 
 namespace CADToolsGUI.Menus
 {

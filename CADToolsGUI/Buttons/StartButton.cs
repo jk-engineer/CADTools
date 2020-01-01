@@ -18,6 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
+using CADToolsGUI.Classes;
+using CADToolsGUI.Enumerators;
+
 namespace CADToolsGUI.Buttons
 {
     /// <summary>

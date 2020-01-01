@@ -20,6 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Linq;
 using System.Windows.Forms;
+using CADToolsGUI.Buttons;
+using CADToolsGUI.Classes;
+using CADToolsGUI.Enumerators;
 
 namespace CADToolsGUI.GroupBoxes
 {
