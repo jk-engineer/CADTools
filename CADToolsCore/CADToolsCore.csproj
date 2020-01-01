@@ -67,6 +67,7 @@
     <Compile Include="Interfaces\ICADApplication.cs" />
     <Compile Include="Interfaces\IConditions.cs" />
     <Compile Include="Interfaces\IDocument.cs" />
+    <Compile Include="Interfaces\IDocumentsCollection.cs" />
     <Compile Include="Interfaces\IDrawingDocument.cs" />
     <Compile Include="Interfaces\IDrawingSheet.cs" />
     <Compile Include="Interfaces\IDrawingView.cs" />

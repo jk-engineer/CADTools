@@ -31,14 +31,14 @@ namespace CADToolsCore.Classes
     /// Коллекция документов. В качестве ключей используются полные имена файлов документов.
     /// </summary>
     /// <typeparam name="TDocument"></typeparam>
-    public class DocumentsCollection<TDocument> : IDictionary<string, TDocument> where TDocument : IDocument
+    public class DocumentsCollection<TDocument> : IDocumentsCollection<TDocument> where TDocument : IDocument
     {
         #region Поля, свойства
 
         /// <summary>
         /// Внутренний словарь с документами.
         /// </summary>
-        private Dictionary<string, TDocument> _documentsCollection;
+        private Dictionary<string, TDocument> _documents;
 
         #endregion
 
@@ -49,43 +49,27 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public TDocument this[string fullFileName]
-        {
-            get { return _documentsCollection[fullFileName]; }
-            set { _documentsCollection[fullFileName] = value; }
-        }
+        public TDocument this[string fullFileName] => _documents[fullFileName];
 
         /// <summary>
         /// Возвращает число документов в коллекции.
         /// </summary>
-        public int Count
-        {
-            get { return _documentsCollection.Count; }
-        }
+        public int Count => _documents.Count;
 
         /// <summary>
         /// Возвращает значение, указывающее, является ли коллекция доступной только для чтения.
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Получает коллекцию, содержащую полные имена файлов документов.
         /// </summary>
-        public ICollection<string> Keys
-        {
-            get { return _documentsCollection.Keys; }
-        }
+        public ICollection<string> Keys => _documents.Keys;
 
         /// <summary>
         /// Получает коллекцию, содержащую документы.
         /// </summary>
-        public ICollection<TDocument> Values
-        {
-            get { return _documentsCollection.Values; }
-        }
+        public ICollection<TDocument> Values => _documents.Values;
 
         #endregion
 
@@ -96,16 +80,19 @@ namespace CADToolsCore.Classes
         /// </summary>
         public DocumentsCollection()
         {
-            _documentsCollection = new Dictionary<string, TDocument>();
+            _documents = new Dictionary<string, TDocument>();
         }
 
         /// <summary>
         /// Новый экземпляр класса.
         /// </summary>
-        /// <param name="dictionary">Коллекция, элементы которой копируются в новый экземпляр класса.</param>
-        public DocumentsCollection(IDictionary<string, TDocument> dictionary)
+        /// <param name="documents">Коллекция, элементы которой копируются в новый экземпляр класса.</param>
+        public DocumentsCollection(IDocumentsCollection<TDocument> documents) : this()
         {
-            _documentsCollection = new Dictionary<string, TDocument>(dictionary);
+            foreach (TDocument doc in documents)
+            {
+                _documents.Add(doc.FullFileName, doc);
+            }
         }
 
         #endregion
@@ -113,95 +100,50 @@ namespace CADToolsCore.Classes
         #region Методы (реализация интерфейса)
 
         /// <summary>
-        /// Метод не поддерживается. Используйте вместо него метод <see cref="AddDocument(TDocument)"/>.
+        /// Добавляет документ в коллекцию.
         /// </summary>
-        /// <param name="item"></param>
-        [Obsolete]
-        public void Add(KeyValuePair<string, TDocument> item)
+        /// <param name="document">Документ.</param>
+        public void Add(TDocument document)
         {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Метод не поддерживается. Используйте вместо него метод <see cref="AddDocument(TDocument)"/>.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        [Obsolete]
-        public void Add(string key, TDocument value)
-        {
-            throw new NotSupportedException();
+            string fullFileName = document.FullFileName;
+            if (!_documents.ContainsKey(fullFileName))
+            {
+                _documents.Add(fullFileName, document);
+            }
         }
 
         /// <summary>
         /// Удаляет все документы из коллекции.
         /// </summary>
-        public void Clear()
-        {
-            _documentsCollection.Clear();
-        }
-
-        /// <summary>
-        /// Метод не поддерживается. Используйте вместо него метод <see cref="AddDocument(TDocument)"/>.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public bool Contains(KeyValuePair<string, TDocument> item)
-        {
-            throw new NotSupportedException();
-        }
+        public void Clear() => _documents.Clear();
 
         /// <summary>
         /// Определяет, содержится ли документ с указанным именем файла в коллекции.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public bool ContainsKey(string fullFileName)
-        {
-            return _documentsCollection.ContainsKey(fullFileName);
-        }
+        public bool Contains(string fullFileName) => _documents.ContainsKey(fullFileName);
 
         /// <summary>
-        /// Метод не поддерживается.
+        /// Определяет, содержится ли документ в коллекции.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="arrayIndex"></param>
-        [Obsolete]
-        public void CopyTo(KeyValuePair<string, TDocument>[] array, int arrayIndex)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
-        /// </summary>
+        /// <param name="document">Документ.</param>
         /// <returns></returns>
-        public IEnumerator<KeyValuePair<string, TDocument>> GetEnumerator()
-        {
-            return _documentsCollection.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Метод не поддерживается.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public bool Remove(KeyValuePair<string, TDocument> item)
-        {
-            throw new NotSupportedException();
-        }
+        public bool Contains(TDocument document) => this.Contains(document.FullFileName);
 
         /// <summary>
         /// Удаляет документ с указанным именем файла из коллекции.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public bool Remove(string fullFileName)
-        {
-            return _documentsCollection.Remove(fullFileName);
-        }
+        public bool Remove(string fullFileName) => _documents.Remove(fullFileName);
+
+        /// <summary>
+        /// Удаляет документ из коллекции.
+        /// </summary>
+        /// <param name="document">Документ.</param>
+        /// <returns></returns>
+        public bool Remove(TDocument document) => this.Remove(document.FullFileName);
 
         /// <summary>
         /// Получает документ с указанным именем файла.
@@ -209,74 +151,29 @@ namespace CADToolsCore.Classes
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <param name="document">Возвращаемый документ.</param>
         /// <returns></returns>
-        public bool TryGetValue(string fullFileName, out TDocument document)
-        {
-            return _documentsCollection.TryGetValue(fullFileName, out document);
-        }
-
-        /// <summary>
-        /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        #region Методы (дополнительные)
-
-        /// <summary>
-        /// Добавляет указанный документ в коллекцию.
-        /// </summary>
-        /// <param name="document">Документ.</param>
-        public void AddDocument(TDocument document)
-        {
-            string fullFileName = document.FullFileName;
-            if (!_documentsCollection.ContainsKey(fullFileName))
-            {
-                _documentsCollection.Add(fullFileName, document);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns></returns>
-        public bool ContainsDocument(TDocument document)
-        {
-            return ContainsKey(document.FullFileName);
-        }
+        public bool TryGetValue(string fullFileName, out TDocument document) => _documents.TryGetValue(fullFileName, out document);
 
         /// <summary>
         /// Возвращает индекс документа в коллекции по его имени файла.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public int GetIndexByKey(string fullFileName)
-        {
-            return _documentsCollection.Keys.ToList().IndexOf(fullFileName);
-        }
+        public int GetIndexByKey(string fullFileName) => _documents.Keys.ToList().IndexOf(fullFileName);
 
         /// <summary>
         /// Возвращает массив с именами файлов документов.
         /// </summary>
         /// <returns></returns>
-        public string[] GetFileNames()
-        {
-            return _documentsCollection.Values.Select(doc => System.IO.Path.GetFileName(doc.FullFileName)).ToArray();
-        }
+        public string[] GetFileNames() => _documents.Keys.Select(key => System.IO.Path.GetFileName(key)).ToArray();
 
         /// <summary>
         /// Возвращает коллекцию документов заданного типа.
         /// </summary>
         /// <param name="documentTypes">Набор требуемых типов документов.</param>
         /// <returns></returns>
-        public DocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes)
+        public IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes)
         {
-            return (DocumentsCollection<TDocument>)_documentsCollection.Values.Where(doc => documentTypes.Contains(doc.DocumentType));
+            return (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.DocumentType));
         }
 
         /// <summary>
@@ -286,7 +183,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public TDocument GetDocumentByName(string documentFileName)
         {
-            return _documentsCollection.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault();
+            return _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault();
         }
 
         /// <summary>
@@ -296,7 +193,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public string GetFullFileName(string documentFileName)
         {
-            var resultValue = string.Empty;
+            string resultValue = string.Empty;
             try
             {
                 resultValue = GetDocumentByName(documentFileName).FullFileName;
@@ -307,27 +204,19 @@ namespace CADToolsCore.Classes
             return resultValue;
         }
 
-        /// <summary>
-        /// Возвращает отсортированную коллекцию документов.
-        /// </summary>
-        /// <returns></returns>
-        public DocumentsCollection<TDocument> GetSortedCollection()
+        public void CopyTo(TDocument[] array, int arrayIndex)
         {
-            var sortedCollection = new SortedDictionary<string, TDocument>(_documentsCollection);
-            return new DocumentsCollection<TDocument>(sortedCollection);
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Выполняет сортировку коллекции документов.
-        /// </summary>
-        public void Sort()
+        public IEnumerator<TDocument> GetEnumerator()
         {
-            var sortedCollection = new SortedDictionary<string, TDocument>(_documentsCollection);
-            _documentsCollection.Clear();
-            for (var index = 0; index < sortedCollection.Count; index++)
-            {
-                this.AddDocument(sortedCollection.ElementAt(index).Value);
-            }
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
