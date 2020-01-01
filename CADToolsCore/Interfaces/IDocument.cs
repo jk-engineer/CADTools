@@ -18,6 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
+using CADToolsCore.Classes;
+using CADToolsCore.Enumerators;
+
 namespace CADToolsCore.Interfaces
 {
     /// <summary>

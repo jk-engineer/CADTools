@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #endregion
 
 using System.Linq;
+using CADToolsCore.Enumerators;
+using CADToolsCore.Interfaces;
 
 namespace CADToolsCore.Classes
 {
