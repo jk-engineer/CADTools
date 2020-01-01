@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4CD49E17-B3A9-4740-B5A9-28C202CA3CED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CADToolsGUI</RootNamespace>
+    <AssemblyName>CADToolsGUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Buttons\BaseButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\BaseImageButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\CancelButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\OKButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\QuitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\StartButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\GUIFonts.cs" />
+    <Compile Include="Classes\GUIManager.cs" />
+    <Compile Include="Classes\GUISizes.cs" />
+    <Compile Include="Classes\ImagesFromResources.cs" />
+    <Compile Include="Classes\PictureConverter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Enumerators\IconColor.cs" />
+    <Compile Include="Enumerators\IconSize.cs" />
+    <Compile Include="Forms\PreviewDocumentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProgressBarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchDocumentListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchTreeViewNodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupBoxes\DocumentListGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GroupBoxes\DocumentSourceGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GroupBoxes\DrawingSheetSizeCountGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GroupBoxes\PrinterConfigGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GroupBoxes\TableEditGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListBoxes\CheckedDocumentListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListBoxes\DocumentListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Menus\DocumentListContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Menus\DocumentListMenuItems.cs" />
+    <Compile Include="Menus\SelectDeselectInvertContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Menus\SelectDeselectInvertMenuItems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
