@@ -74,10 +74,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnDataLoaded()
         {
-            if (DataLoaded != null)
-            {
-                DataLoaded();
-            }
+            DataLoaded?.Invoke();
         }
 
         /// <summary>
@@ -90,10 +87,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnDataSaved()
         {
-            if (DataSaved != null)
-            {
-                DataSaved();
-            }
+            DataSaved?.Invoke();
         }
 
         #endregion

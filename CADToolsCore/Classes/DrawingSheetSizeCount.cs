@@ -75,10 +75,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnSheetSizeCounted()
         {
-            if (SheetSizeCounted != null)
-            {
-                SheetSizeCounted();
-            }
+            SheetSizeCounted?.Invoke();
         }
 
         #endregion

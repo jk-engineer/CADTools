@@ -119,10 +119,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnPrinterSettingsChanged()
         {
-            if (PrinterSettingsChanged != null)
-            {
-                PrinterSettingsChanged();
-            }
+            PrinterSettingsChanged?.Invoke();
         }
 
         #endregion

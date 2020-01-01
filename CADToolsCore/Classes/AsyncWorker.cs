@@ -131,10 +131,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnProcessBegin()
         {
-            if (ProcessBegin != null)
-            {
-                ProcessBegin();
-            }
+            ProcessBegin?.Invoke();
         }
 
         /// <summary>
@@ -147,10 +144,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnProcessCancel()
         {
-            if (ProcessCancel != null)
-            {
-                ProcessCancel();
-            }
+            ProcessCancel?.Invoke();
         }
 
         /// <summary>
@@ -163,10 +157,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnProcessEnd()
         {
-            if (ProcessEnd != null)
-            {
-                ProcessEnd();
-            }
+            ProcessEnd?.Invoke();
         }
 
         /// <summary>
@@ -179,10 +170,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnProcessError()
         {
-            if (ProcessError != null)
-            {
-                ProcessError();
-            }
+            ProcessError?.Invoke();
         }
 
         /// <summary>
@@ -195,10 +183,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         protected virtual void OnProgressChanged()
         {
-            if (ProgressChanged != null)
-            {
-                ProgressChanged();
-            }
+            ProgressChanged?.Invoke();
         }
 
         #endregion
