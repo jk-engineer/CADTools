@@ -21,31 +21,46 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace CADToolsCore.Interfaces
 {
     /// <summary>
-    /// Документ-чертеж CAD-системы.
+    /// Материал изделия.
     /// </summary>
-    public interface IDrawingDocument : IDocument
+    public interface IMaterial
     {
         #region Свойства
 
         /// <summary>
-        /// Документы, на которые ссылается чертеж.
+        /// Типоразмер проката.
         /// </summary>
-        IDocument[] ReferencedDocuments { get; }
+        string AssortmentSize { get; set; }
 
         /// <summary>
-        /// Возвращает набор листов чертежа.
+        /// Полное название материала, представленное в виде одной строки.
         /// </summary>
-        IDrawingSheet[] Sheets { get; }
+        string FullName { get; }
 
         /// <summary>
-        /// Масштаб, указанный в основной надписи, выраженный в виде десятичного числа.
+        /// Название материала или проката.
         /// </summary>
-        double Scale { get; set; }
+        string Name { get; set; }
 
         /// <summary>
-        /// Масштаб, указанный в основной надписи, в формате текстовой строки (например, 1:2)
+        /// Символ-разделитель, используемый в названии материала.
         /// </summary>
-        string ScaleString { get; }
+        string Separator { get; }
+
+        /// <summary>
+        /// Обозначение стандарта на прокат.
+        /// </summary>
+        string Standard { get; set; }
+
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// Возвращает полное название материала, представленное в виде одной строки.
+        /// </summary>
+        /// <returns></returns>
+        string ToString();
 
         #endregion
     }

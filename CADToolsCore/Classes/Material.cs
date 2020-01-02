@@ -18,74 +18,67 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
+using System;
+using CADToolsCore.Interfaces;
+
 namespace CADToolsCore.Classes
 {
     /// <summary>
     /// Материал изделия.
     /// </summary>
-    public class Material
+    public struct Material : IMaterial
     {
         #region Поля, свойства
 
         /// <summary>
-        /// Название материала или проката.
-        /// </summary>
-        private string _materialName = string.Empty;
-
-        /// <summary>
-        /// Название материала или проката.
-        /// </summary>
-        public string MaterialName
-        {
-            get { return _materialName; }
-            set { _materialName = value; }
-        }
-
-        /// <summary>
         /// Типоразмер проката.
         /// </summary>
-        private string _assortmentSize = string.Empty;
-
-        /// <summary>
-        /// Типоразмер проката.
-        /// </summary>
-        public string AssortmentSize
-        {
-            get { return _assortmentSize; }
-            set { _assortmentSize = value; }
-        }
-
-        /// <summary>
-        /// Обозначение стандарта на прокат.
-        /// </summary>
-        private string _materialStandard = string.Empty;
-
-        /// <summary>
-        /// Обозначение стандарта на прокат.
-        /// </summary>
-        public string MaterialStandard
-        {
-            get { return _materialStandard; }
-            set { _materialStandard = value; }
-        }
-
-        /// <summary>
-        /// Символ-разделитель, используемый в названии материала.
-        /// </summary>
-        public const string MATERIAL_NAME_SEPARATOR = "_";
+        public string AssortmentSize { get; set; }
 
         /// <summary>
         /// Полное название материала, представленное в виде одной строки.
         /// </summary>
-        public string MaterialFullName
+        public string FullName
         {
             get
             {
-                string resultValue = _materialName;
-                resultValue += (string.IsNullOrWhiteSpace(_assortmentSize)) ? string.Empty : MATERIAL_NAME_SEPARATOR + _assortmentSize;
-                resultValue += (string.IsNullOrWhiteSpace(_materialStandard)) ? string.Empty : MATERIAL_NAME_SEPARATOR + _materialStandard;
+                string resultValue = Name;
+                resultValue += (String.IsNullOrWhiteSpace(AssortmentSize)) ? String.Empty : Separator + AssortmentSize;
+                resultValue += (String.IsNullOrWhiteSpace(Standard)) ? String.Empty : Separator + Standard;
                 return resultValue;
             }
+        }
+
+        /// <summary>
+        /// Название материала или проката.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Обозначение стандарта на прокат.
+        /// </summary>
+        public string Standard { get; set; }
+
+        /// <summary>
+        /// Символ-разделитель, используемый в названии материала.
+        /// </summary>
+        public string Separator { get; }
+
+        #endregion
+
+        #region Конструктор
+
+        /// <summary>
+        /// Новый экземпляр структуры.
+        /// </summary>
+        /// <param name="name">Название материала или проката.</param>
+        /// <param name="assortmentSize">Типоразмер проката.</param>
+        /// <param name="standard">Обозначение стандарта на прокат.</param>
+        public Material(string name, string assortmentSize, string standard) : this()
+        {
+            Name = name;
+            AssortmentSize = assortmentSize;
+            Standard = standard;
         }
 
         #endregion
@@ -96,10 +89,7 @@ namespace CADToolsCore.Classes
         /// Возвращает полное название материала, представленное в виде одной строки.
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return MaterialFullName;
-        }
+        public override string ToString() => FullName;
 
         #endregion
     }

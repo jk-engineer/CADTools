@@ -177,7 +177,7 @@ namespace CADToolsCore.Classes
         /// <param name="documentTypes">Набор требуемых типов документов.</param>
         /// <returns></returns>
         public IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
-            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.DocumentType));
+            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type));
 
         /// <summary>
         /// Возвращает перечислитель, осуществляющий перебор документов коллекции.

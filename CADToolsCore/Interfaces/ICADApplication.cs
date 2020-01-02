@@ -18,7 +18,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
-using CADToolsCore.Classes;
 using CADToolsCore.Enumerators;
 
 namespace CADToolsCore.Interfaces
@@ -56,7 +55,7 @@ namespace CADToolsCore.Interfaces
         /// <typeparam name="TDocument">Тип документа CAD-системы.</typeparam>
         /// <param name="applicationDocuments">Уровень видимости документов в CAD-системе.</param>
         /// <returns></returns>
-        DocumentsCollection<TDocument> GetDocuments<TDocument>(ApplicationDocuments.ApplicationDocumentsEnum applicationDocuments)
+        IDocumentsCollection<TDocument> GetDocuments<TDocument>(ApplicationDocuments.ApplicationDocumentsEnum applicationDocuments)
             where TDocument : IDocument;
 
         /// <summary>

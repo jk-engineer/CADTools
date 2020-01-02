@@ -39,7 +39,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public static bool Invoke(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes)
         {
-            return documentTypes.Contains(document.DocumentType);
+            return documentTypes.Contains(document.Type);
         }
 
         #endregion

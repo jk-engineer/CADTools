@@ -53,6 +53,7 @@
     <Compile Include="Classes\DrawingSheetSizeCount.cs" />
     <Compile Include="Classes\DrawingSheetSizeManager.cs" />
     <Compile Include="Classes\FileManager.cs" />
+    <Compile Include="Interfaces\IMaterial.cs" />
     <Compile Include="Classes\IsNumeric.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\PrinterConfig.cs" />

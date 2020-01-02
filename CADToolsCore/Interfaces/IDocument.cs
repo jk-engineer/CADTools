@@ -31,29 +31,9 @@ namespace CADToolsCore.Interfaces
         #region Свойства
 
         /// <summary>
-        /// Возвращает <see cref="true"/>, если документ не был сохранен после внесенных изменений.
-        /// </summary>
-        bool Dirty { get; }
-
-        /// <summary>
         /// Имя документа, отображаемое в CAD системе.
         /// </summary>
         string DisplayName { get; }
-
-        /// <summary>
-        /// Обозначение документа.
-        /// </summary>
-        string DocumentNumber { get; set; }
-
-        /// <summary>
-        /// Наименование документа.
-        /// </summary>
-        string DocumentTitle { get; set; }
-
-        /// <summary>
-        /// Тип документа.
-        /// </summary>
-        DocumentType.DocumentTypeEnum DocumentType { get; }
 
         /// <summary>
         /// Полное имя файла документа.
@@ -61,14 +41,39 @@ namespace CADToolsCore.Interfaces
         string FullFileName { get; }
 
         /// <summary>
-        /// Материал детали.
+        /// Возвращает <see cref="true"/>, если документ не был сохранен после внесенных изменений.
         /// </summary>
-        Material PartMaterial { get; set; }
+        bool IsDirty { get; }
 
         /// <summary>
         /// Возвращает <see cref="true"/>, если документ является стандартным изделием.
         /// </summary>
-        bool Standard { get; }
+        bool IsStandard { get; }
+
+        /// <summary>
+        /// Материал детали.
+        /// </summary>
+        IMaterial Material { get; set; }
+
+        /// <summary>
+        /// Обозначение документа.
+        /// </summary>
+        string Number { get; set; }
+
+        /// <summary>
+        /// Возвращает обозначение стандарта.
+        /// </summary>
+        string Standard { get; }
+
+        /// <summary>
+        /// Наименование документа.
+        /// </summary>
+        string Title { get; set; }
+
+        /// <summary>
+        /// Тип документа.
+        /// </summary>
+        DocumentType.DocumentTypeEnum Type { get; }
 
         /// <summary>
         /// Растровое изображение документа.
@@ -88,13 +93,6 @@ namespace CADToolsCore.Interfaces
         /// Закрывает документ.
         /// </summary>
         void Close();
-
-        /// <summary>
-        /// Возвращает расширение файла заданного типа документа.
-        /// </summary>
-        /// <param name="documentType">Тип документа.</param>
-        /// <returns></returns>
-        string GetDocumentTypeFileExtension(DocumentType.DocumentTypeEnum documentType);
 
         /// <summary>
         /// Запускает печать документа.

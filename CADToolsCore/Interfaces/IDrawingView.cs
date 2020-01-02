@@ -30,14 +30,14 @@ namespace CADToolsCore.Interfaces
         #region Свойства
 
         /// <summary>
-        /// Тип вида (главный, проекционный, разрез и т.д.).
-        /// </summary>
-        DrawingViewType.DrawingViewTypeEnum Type { get; }
-
-        /// <summary>
         /// Возвращает <see cref="true"/>, если вид содержит развертку листовой детали.
         /// </summary>
-        bool FlatPattern { get; }
+        bool IsFlatPattern { get; }
+
+        /// <summary>
+        /// Возвращает <see cref="true"/>, если угол поворота вида отличается от нуля.
+        /// </summary>
+        bool IsRotated { get; }
 
         /// <summary>
         /// Заголовок вида на чертеже.
@@ -45,14 +45,14 @@ namespace CADToolsCore.Interfaces
         string Label { get; set; }
 
         /// <summary>
+        /// Имя вида.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// Лист чертежа, на котором находится вид.
         /// </summary>
         IDrawingSheet Parent { get; }
-
-        /// <summary>
-        /// Возвращает <see cref="true"/>, если угол поворота вида отличается от нуля.
-        /// </summary>
-        bool Rotated { get; }
 
         /// <summary>
         /// Масштаб вида, выраженный в виде десятичного числа.
@@ -63,6 +63,11 @@ namespace CADToolsCore.Interfaces
         /// Масштаб вида в формате текстовой строки (например, 1:2)
         /// </summary>
         string ScaleString { get; }
+
+        /// <summary>
+        /// Тип вида (главный, проекционный, разрез и т.д.).
+        /// </summary>
+        DrawingViewType.DrawingViewTypeEnum Type { get; }
 
         #endregion
     }
