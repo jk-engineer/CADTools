@@ -33,22 +33,22 @@ namespace CADToolsCore.Enumerators
             /// <summary>
             /// Деталь.
             /// </summary>
-            PartDocument,
+            Part,
 
             /// <summary>
             /// Сборка.
             /// </summary>
-            AssemblyDocument,
+            Assembly,
 
             /// <summary>
             /// Чертеж.
             /// </summary>
-            DrawingDocument,
+            Drawing,
 
             /// <summary>
             /// Неизвестный тип документа.
             /// </summary>
-            UnknownDocument
+            Unknown
         }
     }
 }

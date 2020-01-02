@@ -33,17 +33,17 @@ namespace CADToolsCore.Enumerators
             /// <summary>
             /// Документы, полностью загруженные в CAD-систему (видимые для пользователя).
             /// </summary>
-            VisibleDocuments,
+            Visible,
 
             /// <summary>
             /// Все документы, загруженные в CAD-систему (видимые и фоновые).
             /// </summary>
-            AllDocuments,
+            All,
 
             /// <summary>
             /// Документы, загруженные в CAD-систему в фоне (невидимые для пользователя).
             /// </summary>
-            InvisibleDocuments
+            Invisible
         }
     }
 }

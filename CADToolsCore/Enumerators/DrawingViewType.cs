@@ -33,27 +33,27 @@ namespace CADToolsCore.Enumerators
             /// <summary>
             /// Стандартный (главный) вид.
             /// </summary>
-            StandardDrawingView,
+            Standard,
 
             /// <summary>
             /// Проекционный вид.
             /// </summary>
-            ProjectedDrawingView,
+            Projected,
 
             /// <summary>
             /// Вспомогательный вид (вид по стрелке).
             /// </summary>
-            AuxiliaryDrawingView,
+            Auxiliary,
 
             /// <summary>
             /// Разрез.
             /// </summary>
-            SectionDrawingView,
+            Section,
 
             /// <summary>
             /// Местный вид.
             /// </summary>
-            DetailDrawingView
+            Detail
         }
     }
 }
