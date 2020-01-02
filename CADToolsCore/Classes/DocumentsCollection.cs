@@ -38,7 +38,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Внутренний словарь с документами.
         /// </summary>
-        private Dictionary<string, TDocument> _documents;
+        private readonly SortedDictionary<string, TDocument> _documents;
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         public DocumentsCollection()
         {
-            _documents = new Dictionary<string, TDocument>();
+            _documents = new SortedDictionary<string, TDocument>();
         }
 
         /// <summary>
