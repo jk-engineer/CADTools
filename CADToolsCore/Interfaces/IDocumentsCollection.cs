@@ -36,6 +36,13 @@ namespace CADToolsCore.Interfaces
         /// <returns></returns>
         TDocument this[string fullFileName] { get; }
 
+        /// <summary>
+        /// Возвращает документ по указанному индексу.
+        /// </summary>
+        /// <param name="index">Индекс.</param>
+        /// <returns></returns>
+        TDocument this[int index] { get; }
+
         #region Свойства
 
         /// <summary>
@@ -99,6 +106,13 @@ namespace CADToolsCore.Interfaces
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
         bool Remove(string fullFileName);
+
+        /// <summary>
+        /// Удаляет документ с указанным индексом из коллекции.
+        /// </summary>
+        /// <param name="index">Индекс.</param>
+        /// <returns></returns>
+        bool Remove(int index);
 
         /// <summary>
         /// Получает документ с указанным именем файла.

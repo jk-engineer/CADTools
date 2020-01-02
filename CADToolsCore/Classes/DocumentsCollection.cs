@@ -30,7 +30,7 @@ namespace CADToolsCore.Classes
     /// <summary>
     /// Коллекция документов. В качестве ключей используются полные имена файлов документов.
     /// </summary>
-    /// <typeparam name="TDocument"></typeparam>
+    /// <typeparam name="TDocument">Документ CAD-системы.</typeparam>
     public class DocumentsCollection<TDocument> : IDocumentsCollection<TDocument> where TDocument : IDocument
     {
         #region Поля, свойства
@@ -45,11 +45,18 @@ namespace CADToolsCore.Classes
         #region Поля, свойства (реализация интерфейса)
 
         /// <summary>
-        /// Возвращает или задает документ с указанным полным именем файла.
+        /// Возвращает документ по указанному имени.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
         public TDocument this[string fullFileName] => _documents[fullFileName];
+
+        /// <summary>
+        /// Возвращает документ по указанному индексу.
+        /// </summary>
+        /// <param name="index">Индекс.</param>
+        /// <returns></returns>
+        public TDocument this[int index] => _documents.ElementAt(index).Value;
 
         /// <summary>
         /// Возвращает число документов в коллекции.
@@ -132,6 +139,83 @@ namespace CADToolsCore.Classes
         public bool Contains(TDocument document) => this.Contains(document.FullFileName);
 
         /// <summary>
+        /// Выполняет копирование элементов коллекции в массив, начиная с указанного индекса.
+        /// </summary>
+        /// <param name="array">Массив, в который выполняется копирование.</param>
+        /// <param name="arrayIndex">Индекс в массиве, начиная с которого заполняется массив.</param>
+        public void CopyTo(TDocument[] array, int arrayIndex)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException("Ошибка обращения к массиву.");
+            }
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("Недопустимое значение индекса.");
+            }
+            if (array.Length - arrayIndex < this.Count)
+            {
+                throw new ArgumentException("Недостаточно элементов в массиве для выполнения копирования.");
+            }
+            for (int index = 0; index < this.Count; index++)
+            {
+                array[index + arrayIndex] = this[index];
+            }
+        }
+
+        /// <summary>
+        /// Возвращает документ по его полному или частичному имени.
+        /// </summary>
+        /// <param name="documentFileName">Имя файла искомого документа.</param>
+        /// <returns></returns>
+        public TDocument GetDocumentByName(string documentFileName) =>
+            _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault();
+
+        /// <summary>
+        /// Возвращает коллекцию документов заданного типа.
+        /// </summary>
+        /// <param name="documentTypes">Набор требуемых типов документов.</param>
+        /// <returns></returns>
+        public IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
+            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.DocumentType));
+
+        /// <summary>
+        /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<TDocument> GetEnumerator() => _documents.Values.GetEnumerator();
+
+        /// <summary>
+        /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+        /// <summary>
+        /// Возвращает массив с именами файлов документов.
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetFileNames() => _documents.Keys.Select(key => System.IO.Path.GetFileName(key)).ToArray();
+
+        /// <summary>
+        /// Возвращает полное имя файла документа, если он содержится в коллекции.
+        /// </summary>
+        /// <param name="documentFileName">Имя файла искомого документа.</param>
+        /// <returns></returns>
+        public string GetFullFileName(string documentFileName)
+        {
+            TDocument doc = this.GetDocumentByName(documentFileName);
+            return (doc != null) ? doc.FullFileName : String.Empty;
+        }
+
+        /// <summary>
+        /// Возвращает индекс документа в коллекции по его имени файла.
+        /// </summary>
+        /// <param name="fullFileName">Полное имя файла.</param>
+        /// <returns></returns>
+        public int GetIndexByKey(string fullFileName) => _documents.Keys.ToList().IndexOf(fullFileName);
+
+        /// <summary>
         /// Удаляет документ с указанным именем файла из коллекции.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
@@ -146,78 +230,19 @@ namespace CADToolsCore.Classes
         public bool Remove(TDocument document) => this.Remove(document.FullFileName);
 
         /// <summary>
+        /// Удаляет документ с указанным индексом из коллекции.
+        /// </summary>
+        /// <param name="index">Индекс.</param>
+        /// <returns></returns>
+        public bool Remove(int index) => this.Remove(this[index]);
+
+        /// <summary>
         /// Получает документ с указанным именем файла.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <param name="document">Возвращаемый документ.</param>
         /// <returns></returns>
         public bool TryGetValue(string fullFileName, out TDocument document) => _documents.TryGetValue(fullFileName, out document);
-
-        /// <summary>
-        /// Возвращает индекс документа в коллекции по его имени файла.
-        /// </summary>
-        /// <param name="fullFileName">Полное имя файла.</param>
-        /// <returns></returns>
-        public int GetIndexByKey(string fullFileName) => _documents.Keys.ToList().IndexOf(fullFileName);
-
-        /// <summary>
-        /// Возвращает массив с именами файлов документов.
-        /// </summary>
-        /// <returns></returns>
-        public string[] GetFileNames() => _documents.Keys.Select(key => System.IO.Path.GetFileName(key)).ToArray();
-
-        /// <summary>
-        /// Возвращает коллекцию документов заданного типа.
-        /// </summary>
-        /// <param name="documentTypes">Набор требуемых типов документов.</param>
-        /// <returns></returns>
-        public IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes)
-        {
-            return (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.DocumentType));
-        }
-
-        /// <summary>
-        /// Возвращает документ по его полному или частичному имени.
-        /// </summary>
-        /// <param name="documentFileName">Имя файла искомого документа.</param>
-        /// <returns></returns>
-        public TDocument GetDocumentByName(string documentFileName)
-        {
-            return _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Возвращает полное имя файла документа, если он содержится в коллекции.
-        /// </summary>
-        /// <param name="documentFileName">Имя файла искомого документа.</param>
-        /// <returns></returns>
-        public string GetFullFileName(string documentFileName)
-        {
-            string resultValue = string.Empty;
-            try
-            {
-                resultValue = GetDocumentByName(documentFileName).FullFileName;
-            }
-            catch (System.Exception)
-            {
-            }
-            return resultValue;
-        }
-
-        public void CopyTo(TDocument[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<TDocument> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
     }
