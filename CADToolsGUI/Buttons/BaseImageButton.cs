@@ -59,11 +59,11 @@ namespace CADToolsGUI.Buttons
         /// <param name="icon">Изображение на кнопке.</param>
         public BaseImageButton(string buttonName, System.Drawing.Image icon = null)
         {
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = buttonName;
-            this.Icon = icon;
-            this.Text = string.Empty;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = buttonName;
+            Icon = icon;
+            Text = string.Empty;
         }
 
         #endregion
@@ -78,11 +78,11 @@ namespace CADToolsGUI.Buttons
         {
             if (icon != null)
             {
-                this.Size = new System.Drawing.Size(icon.Width + IMAGE_OFFSET, icon.Height + IMAGE_OFFSET);
+                Size = new System.Drawing.Size(icon.Width + IMAGE_OFFSET, icon.Height + IMAGE_OFFSET);
             }
             else
             {
-                this.Size = new System.Drawing.Size(GUISizes.BUTTON_WIDTH, GUISizes.BUTTON_HEIGHT);
+                Size = new System.Drawing.Size(GUISizes.BUTTON_WIDTH, GUISizes.BUTTON_HEIGHT);
             }
         }
 

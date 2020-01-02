@@ -199,15 +199,15 @@ namespace CADToolsGUI.Forms
         public SearchDocumentListForm()
         {
             // Свойства формы.
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "SearchDocumentForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Поиск документа в списке";
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "SearchDocumentForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Поиск документа в списке";
             // Размещение элементов на форме.
             Control[] controlArray1 = { _documentTypeLabel, _drawingSheetsCountLabel };
             _docInfoGroupBox.Controls.AddRange(controlArray1);
@@ -215,7 +215,7 @@ namespace CADToolsGUI.Forms
             GUIManager.AlignControlsByLeftBorder(controlArray1);
             GUIManager.FitContainerSize(_docInfoGroupBox, GUIManager.FitSizeMode.FitHeight, 0, GUISizes.VERTICAL_OFFSET);
 
-            this.Controls.AddRange(new Control[] {_searchTextBox, _searchResultListBox, _previewPictureBox,
+            Controls.AddRange(new Control[] {_searchTextBox, _searchResultListBox, _previewPictureBox,
                                    _docInfoGroupBox, _goToDocumentButton});
 
             Control[] controlArray2 = { _searchTextBox, _previewPictureBox };

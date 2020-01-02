@@ -35,11 +35,11 @@ namespace CADToolsGUI.ListBoxes
         /// </summary>
         public DocumentListBox()
         {
-            this.AllowDrop = true;
-            this.IntegralHeight = false;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "DocumentList";
-            this.SelectionMode = SelectionMode.MultiExtended;
+            AllowDrop = true;
+            IntegralHeight = false;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "DocumentList";
+            SelectionMode = SelectionMode.MultiExtended;
         }
 
         #endregion

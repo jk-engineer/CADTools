@@ -113,21 +113,21 @@ namespace CADToolsGUI.Forms
         public SearchTreeViewNodeForm(string formCaption, string buttonCaption)
         {
             // Свойства формы.
-            this.AcceptButton = _goToNodeButton;
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "SearchTreeViewNodeForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = formCaption;
+            AcceptButton = _goToNodeButton;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "SearchTreeViewNodeForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = formCaption;
             // Свойства элементов.
             _goToNodeButton.Text = buttonCaption;
             // Размещение элементов на форме.
             Control[] controlArray = { _searchTextBox, _searchResultListBox, _goToNodeButton };
-            this.Controls.AddRange(controlArray);
+            Controls.AddRange(controlArray);
             GUIManager.PlaceControlsVertically(controlArray, GUISizes.VERTICAL_OFFSET);
             GUIManager.AlignControlsByLeftBorder(controlArray);
             GUIManager.FitContainerSize(this, GUIManager.FitSizeMode.FitWidthAndHeight, GUISizes.HORIZONTAL_OFFSET, GUISizes.BOTTO_OFFSET_FORM);

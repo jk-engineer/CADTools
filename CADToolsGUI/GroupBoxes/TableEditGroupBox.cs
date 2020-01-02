@@ -282,10 +282,10 @@ namespace CADToolsGUI.GroupBoxes
         public TableEditGroupBox(string caption = "Редактор:")
         {
             // Свойства контейнера.
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "TableEditGroupBox";
-            this.Text = caption;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "TableEditGroupBox";
+            Text = caption;
             // Свойства элементов.
             BaseImageButton[] buttonArray = {
                 _moveRowsUpButton,
@@ -305,7 +305,7 @@ namespace CADToolsGUI.GroupBoxes
             GUIManager.FitContainerSize(_editTableGroupBox, GUIManager.FitSizeMode.FitWidthAndHeight, GUISizes.HORIZONTAL_OFFSET, GUISizes.VERTICAL_OFFSET);
             // Размещение элементов в контейнере.
             Control[] controlArray1 = { _dataGridViewObject, _editTableGroupBox, _saveChangesButton, _cancelButtonObject };
-            this.Controls.AddRange(controlArray1);
+            Controls.AddRange(controlArray1);
 
             Control[] controlArray2 = { _dataGridViewObject, _editTableGroupBox };
             GUIManager.PlaceControlsVertically(controlArray2, GUISizes.VERTICAL_OFFSET);

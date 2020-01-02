@@ -37,11 +37,11 @@ namespace CADToolsGUI.Buttons
         /// <param name="buttonName">Имя кнопки.</param>
         public BaseButton(string buttonText, string buttonName)
         {
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = buttonName;
-            this.Size = new System.Drawing.Size(GUISizes.BUTTON_WIDTH, GUISizes.BUTTON_HEIGHT);
-            this.Text = buttonText;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = buttonName;
+            Size = new System.Drawing.Size(GUISizes.BUTTON_WIDTH, GUISizes.BUTTON_HEIGHT);
+            Text = buttonText;
         }
 
         #endregion

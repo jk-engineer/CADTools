@@ -35,12 +35,12 @@ namespace CADToolsGUI.ListBoxes
         /// </summary>
         public CheckedDocumentListBox()
         {
-            this.AllowDrop = true;
-            this.IntegralHeight = false;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "CheckedDocumentList";
+            AllowDrop = true;
+            IntegralHeight = false;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "CheckedDocumentList";
             // Изменение поведения флажков.
-            this.ItemCheck += CheckedDocumentListBox_ItemCheck;
+            ItemCheck += CheckedDocumentListBox_ItemCheck;
         }
 
         #endregion

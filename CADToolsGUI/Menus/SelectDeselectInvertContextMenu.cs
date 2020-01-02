@@ -38,9 +38,9 @@ namespace CADToolsGUI.Menus
         public SelectDeselectInvertContextMenu(IconColor.IconColorEnum iconColor = IconColor.IconColorEnum.Blue)
         {
             // Свойства контекстного меню.
-            this.Font = GUIFonts.MainFont;
+            Font = GUIFonts.MainFont;
             // Добавление элементов в контекстное меню.
-            this.Items.AddRange(SelectDeselectInvertMenuItems.GetSelectDeselectInvertMenuItems(iconColor));
+            Items.AddRange(SelectDeselectInvertMenuItems.GetSelectDeselectInvertMenuItems(iconColor));
         }
 
         #endregion

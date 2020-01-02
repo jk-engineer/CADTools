@@ -36,9 +36,9 @@ namespace CADToolsGUI.Menus
         public DocumentListContextMenu()
         {
             // Свойства контекстного меню.
-            this.Font = GUIFonts.MainFont;
+            Font = GUIFonts.MainFont;
             // Добавление элементов в контекстное меню.
-            this.Items.AddRange(DocumentListMenuItems.GetDocumentListMenuItems());
+            Items.AddRange(DocumentListMenuItems.GetDocumentListMenuItems());
         }
 
         #endregion

@@ -89,14 +89,14 @@ namespace CADToolsGUI.GroupBoxes
         public PrinterConfigGroupBox(string caption = "Принтеры:")
         {
             // Свойства контейнера.
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "PrinterConfigGroupBox";
-            this.Text = caption;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "PrinterConfigGroupBox";
+            Text = caption;
             // Размещение элементов в контейнере.
-            this.Controls.AddRange(new Control[] { _printersComboBox, _printerConfigButton });
-            this.SizeChanged += PrinterConfigGroupBox_SizeChanged;
-            this.Size = new System.Drawing.Size(350, 54);
+            Controls.AddRange(new Control[] { _printersComboBox, _printerConfigButton });
+            SizeChanged += PrinterConfigGroupBox_SizeChanged;
+            Size = new System.Drawing.Size(350, 54);
         }
 
         #endregion
@@ -105,7 +105,7 @@ namespace CADToolsGUI.GroupBoxes
 
         private void PrinterConfigGroupBox_SizeChanged(object sender, System.EventArgs e)
         {
-            _printersComboBox.Size = new System.Drawing.Size(this.Width - _printerConfigButton.Width -
+            _printersComboBox.Size = new System.Drawing.Size(Width - _printerConfigButton.Width -
                                                               GUISizes.HORIZONTAL_OFFSET * 3, GUISizes.COMBOBOX_HEIGHT);
             Control[] controlArray = { _printersComboBox, _printerConfigButton };
             GUIManager.PlaceControlsHorizontally(controlArray, GUISizes.HORIZONTAL_OFFSET);

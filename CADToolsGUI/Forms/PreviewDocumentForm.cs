@@ -65,17 +65,17 @@ namespace CADToolsGUI.Forms
         public PreviewDocumentForm()
         {
             // Свойства формы.
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PreviewForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Просмотр";
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PreviewForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Просмотр";
             // Размещение элеметов на форме.
-            this.Controls.Add(_previewBox);
+            Controls.Add(_previewBox);
             GUIManager.FitContainerSize(this, GUIManager.FitSizeMode.FitWidthAndHeight, GUISizes.HORIZONTAL_OFFSET, GUISizes.VERTICAL_OFFSET - 4);
         }
 

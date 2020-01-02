@@ -93,21 +93,21 @@ namespace CADToolsGUI.Forms
         public ProgressBarForm(string caption, bool cancelEnabled)
         {
             // Свойства формы.
-            this.ControlBox = false;
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ProgressBarForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = caption;
+            ControlBox = false;
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ProgressBarForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = caption;
             // Свойства элементов.
             _cancelButton.Enabled = cancelEnabled;
             // Размещение элементов на форме.
             Control[] controlArray = { _progressBar, _cancelButton };
-            this.Controls.AddRange(controlArray);
+            Controls.AddRange(controlArray);
             GUIManager.PlaceControlsVertically(controlArray, GUISizes.VERTICAL_OFFSET);
             GUIManager.CenterControlsVertically(controlArray);
             GUIManager.FitContainerSize(this, GUIManager.FitSizeMode.FitWidthAndHeight, GUISizes.HORIZONTAL_OFFSET, GUISizes.VERTICAL_OFFSET);

@@ -150,12 +150,12 @@ namespace CADToolsGUI.GroupBoxes
         public DocumentSourceGroupBox(string caption = "Источник:")
         {
             // Свойства контейнера.
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "DocumentSourceGroupBox";
-            this.Text = caption;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "DocumentSourceGroupBox";
+            Text = caption;
             // Размещение элементов в контейнере.
-            this.Controls.AddRange(new Control[] { _cadSourceRadioButton, _filesSourceRadioButton,
+            Controls.AddRange(new Control[] { _cadSourceRadioButton, _filesSourceRadioButton,
                                                    _updateButton, _openDocumentsButton });
             GUIManager.PlaceControlsVertically(new Control[] { _updateButton, _openDocumentsButton }, GUISizes.VERTICAL_OFFSET - 6);
             GUIManager.CenterControlsHorizontally(new Control[] { _updateButton, _cadSourceRadioButton });

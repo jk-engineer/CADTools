@@ -111,18 +111,18 @@ namespace CADToolsGUI.Forms
         public ReportForm()
         {
             // Свойства формы.
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ReportForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Отчет";
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ReportForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Отчет";
             // Размещение элементов на форме.
             Control[] controlArray = { _reportCaptionLabel, _reportTextBox, _OKButton };
-            this.Controls.AddRange(controlArray);
+            Controls.AddRange(controlArray);
             GUIManager.PlaceControlsVertically(controlArray, GUISizes.VERTICAL_OFFSET);
             GUIManager.CenterControlsVertically(new Control[] { _reportTextBox, _OKButton });
             GUIManager.FitContainerSize(this, GUIManager.FitSizeMode.FitWidthAndHeight, GUISizes.HORIZONTAL_OFFSET, GUISizes.VERTICAL_OFFSET);

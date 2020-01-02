@@ -59,14 +59,14 @@ namespace CADToolsGUI.GroupBoxes
         public DrawingSheetSizeCountGroupBox(string caption = "Форматы:")
         {
             // Свойства контейнера.
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "DrawingSheetSizeCountGroupBox";
-            this.Text = caption;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "DrawingSheetSizeCountGroupBox";
+            Text = caption;
             // Размещение элементов в контейнере.
-            this.Controls.Add(_drawingSheetSizeCountListBox);
-            this.SizeChanged += DrawingSheetSizeCountGroupBox_SizeChanged;
-            this.Size = new System.Drawing.Size(100, 200);
+            Controls.Add(_drawingSheetSizeCountListBox);
+            SizeChanged += DrawingSheetSizeCountGroupBox_SizeChanged;
+            Size = new System.Drawing.Size(100, 200);
         }
 
         #endregion
@@ -75,8 +75,8 @@ namespace CADToolsGUI.GroupBoxes
 
         private void DrawingSheetSizeCountGroupBox_SizeChanged(object sender, System.EventArgs e)
         {
-            _drawingSheetSizeCountListBox.Width = this.Width - 2 * GUISizes.HORIZONTAL_OFFSET;
-            _drawingSheetSizeCountListBox.Height = this.Height - GUISizes.TOP_OFFSET_GROUPBOX - GUISizes.VERTICAL_OFFSET;
+            _drawingSheetSizeCountListBox.Width = Width - 2 * GUISizes.HORIZONTAL_OFFSET;
+            _drawingSheetSizeCountListBox.Height = Height - GUISizes.TOP_OFFSET_GROUPBOX - GUISizes.VERTICAL_OFFSET;
             GUIManager.CenterControlByContainer(_drawingSheetSizeCountListBox);
         }
 

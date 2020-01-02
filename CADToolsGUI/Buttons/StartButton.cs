@@ -45,7 +45,7 @@ namespace CADToolsGUI.Buttons
         /// <param name="iconSize">Размер изображения на кнопке.</param>
         public StartButton(IconSize.IconSizeEnum iconSize) : base("StartButton")
         {
-            this.Icon = ImagesFromResources.GetImage(IMAGE_NAME, iconSize);
+            Icon = ImagesFromResources.GetImage(IMAGE_NAME, iconSize);
         }
 
         #endregion

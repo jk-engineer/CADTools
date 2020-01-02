@@ -84,14 +84,14 @@ namespace CADToolsGUI.GroupBoxes
         public DocumentListGroupBox(string caption = "Документы:")
         {
             // Свойства контейнера.
-            this.Font = GUIFonts.MainFont;
-            this.Location = GUISizes.DefaultControlLocation;
-            this.Name = "DocumentListGroupBox";
-            this.Text = caption;
+            Font = GUIFonts.MainFont;
+            Location = GUISizes.DefaultControlLocation;
+            Name = "DocumentListGroupBox";
+            Text = caption;
             // Размещение элементов в контейнере.
-            this.Controls.AddRange(new Control[] { _checkedDocumentListBox, _selectDeselectButton, _invertButton });
-            this.SizeChanged += DocumentListGroupBox_SizeChanged;
-            this.Size = new System.Drawing.Size(250, 350);
+            Controls.AddRange(new Control[] { _checkedDocumentListBox, _selectDeselectButton, _invertButton });
+            SizeChanged += DocumentListGroupBox_SizeChanged;
+            Size = new System.Drawing.Size(250, 350);
         }
 
         #endregion
@@ -100,8 +100,8 @@ namespace CADToolsGUI.GroupBoxes
 
         private void DocumentListGroupBox_SizeChanged(object sender, System.EventArgs e)
         {
-            _checkedDocumentListBox.Width = this.Width - 2 * GUISizes.HORIZONTAL_OFFSET;
-            _checkedDocumentListBox.Height = this.Height - _checkedDocumentListBox.Top -
+            _checkedDocumentListBox.Width = Width - 2 * GUISizes.HORIZONTAL_OFFSET;
+            _checkedDocumentListBox.Height = Height - _checkedDocumentListBox.Top -
                                               2 * GUISizes.VERTICAL_OFFSET - GUISizes.BUTTON_HEIGHT;
             GUIManager.PlaceControlsVertically(new Control[] { _checkedDocumentListBox, _selectDeselectButton }, GUISizes.VERTICAL_OFFSET);
             GUIManager.AlignControlsByTopBorder(new Control[] { _selectDeselectButton, _invertButton });
