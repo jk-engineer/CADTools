@@ -125,7 +125,7 @@ namespace CADToolsCore.Classes
         static DrawingSheetSizeManager()
         {
             // Заполнение коллекций значениями высоты и ширины форматов.
-            for (var index = 0; index < SheetSizeNames.Count(); index++)
+            for (int index = 0; index < SheetSizeNames.Count(); index++)
             {
                 _heightList.Add((DrawingSheetSize.DrawingSheetSizeEnum)index, _heightValues[index]);
                 _widthList.Add((DrawingSheetSize.DrawingSheetSizeEnum)index, _widthValues[index]);

@@ -306,7 +306,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public virtual int GetColumnIndex(string columnName)
         {
-            var resultValue = -1;
+            int resultValue = -1;
             for (int columnIndex = 0; columnIndex < _dataTable.Columns.Count; columnIndex++)
             {
                 if (_dataTable.Columns[columnIndex].ColumnName.ToLower() == columnName.ToLower())

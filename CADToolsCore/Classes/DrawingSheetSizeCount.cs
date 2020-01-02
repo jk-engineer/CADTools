@@ -129,8 +129,8 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public override string ToString()
         {
-            var resultValue = string.Empty;
-            for (var index = 0; index < _sheetSizeCount.Count(); index++)
+            string resultValue = string.Empty;
+            for (int index = 0; index < _sheetSizeCount.Count(); index++)
             {
                 // Пропуск нулевых значений счетчика (для улучшения читаемости данных).
                 if (_sheetSizeCount.Values.ElementAt(index) == 0)
