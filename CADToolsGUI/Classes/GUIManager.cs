@@ -70,7 +70,7 @@ namespace CADToolsGUI.Classes
             }
             // Для правильного расположения элемента на форме необходимо ввести поправку.
             // Для других контейнеров поправка не нужна.
-            var correction = 0;
+            int correction = 0;
             if (CheckControlType(control, typeof(Form)))
             {
                 correction = GUISizes.LEFT_CORRECTION;
@@ -84,7 +84,7 @@ namespace CADToolsGUI.Classes
         /// <param name="controls">Набор элементов интерфейса.</param>
         public static void CenterControlHorizontallyByContainer(Control[] controls)
         {
-            foreach (var control in controls)
+            foreach (Control control in controls)
             {
                 CenterControlHorizontallyByContainer(control);
             }
@@ -106,7 +106,7 @@ namespace CADToolsGUI.Classes
             // Для правильного расположения элемента на форме необходимо ввести поправку.
             // Также необходима поправка в элементах GroupBox и PictureBox.
             // Для других контейнеров поправка не нужна.
-            var correction = 0;
+            int correction = 0;
             if (CheckControlType(control, typeof(Form)))
             {
                 correction = GUISizes.TOP_CORRECTION;
@@ -128,7 +128,7 @@ namespace CADToolsGUI.Classes
         /// <param name="controls">Набор элементов интерфейса.</param>
         public static void CenterControlVerticallyByContainer(Control[] controls)
         {
-            foreach (var control in controls)
+            foreach (Control control in controls)
             {
                 CenterControlVerticallyByContainer(control);
             }
@@ -165,7 +165,7 @@ namespace CADToolsGUI.Classes
             // Первый элемент в массиве является базовым и не меняет своего положения.
             // Поэтому обработка начинается со второго элемента массива, и верхняя граница цикла должна быть на 2 меньше,
             // чем количество элементов в массиве.
-            for (var index = 0; index < controls.Count() - 1; index++)
+            for (int index = 0; index < controls.Count() - 1; index++)
             {
                 controlObj = controls[index];
                 controlObj.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -185,7 +185,7 @@ namespace CADToolsGUI.Classes
             // Первый элемент в массиве является базовым и не меняет своего положения.
             // Поэтому обработка начинается со второго элемента массива, и верхняя граница цикла должна быть на 2 меньше,
             // чем количество элементов в массиве.
-            for (var index = 0; index < controls.Count() - 1; index++)
+            for (int index = 0; index < controls.Count() - 1; index++)
             {
                 controlObj = controls[index];
                 controlObj.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -220,7 +220,7 @@ namespace CADToolsGUI.Classes
             // Расположение элементов по горизонтальным рядам (в соответствии с количеством столбцов).
             if (columnCount != 0)
             {
-                for (var index = 0; index < controls.Count(); index++)
+                for (int index = 0; index < controls.Count(); index++)
                 {
                     controlList.Add(controls[index]);
                     // После заполнения ряда, либо по достижении последнего элемента выполняется размещение элементов.
@@ -241,7 +241,7 @@ namespace CADToolsGUI.Classes
                 return;
             }
             // Расположение элементов по вертикальным столбцам (в соответствии с количеством строк).
-            for (var index = 0; index < controls.Count(); index++)
+            for (int index = 0; index < controls.Count(); index++)
             {
                 controlList.Add(controls[index]);
                 // После заполнения столбца, либо по достижении последнего элемента выполняется размещение элементов.
@@ -298,7 +298,7 @@ namespace CADToolsGUI.Classes
             {
                 baseControl.Left = leftOffset;
             }
-            for (var index = 1; index < controls.Count(); index++)
+            for (int index = 1; index < controls.Count(); index++)
             {
                 controls[index].Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 controls[index].Left = baseControl.Left;
@@ -328,7 +328,7 @@ namespace CADToolsGUI.Classes
             {
                 baseControl.Left = container.Width - baseControl.Width - rightOffset;
             }
-            for (var index = 1; index < controls.Count(); index++)
+            for (int index = 1; index < controls.Count(); index++)
             {
                 controls[index].Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 controls[index].Left = baseControl.Left + baseControl.Width - controls[index].Width;
@@ -353,7 +353,7 @@ namespace CADToolsGUI.Classes
             {
                 baseControl.Top = topOffset;
             }
-            for (var index = 1; index < controls.Count(); index++)
+            for (int index = 1; index < controls.Count(); index++)
             {
                 controls[index].Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 controls[index].Top = baseControl.Top;
@@ -383,7 +383,7 @@ namespace CADToolsGUI.Classes
             {
                 baseControl.Top = container.Height - baseControl.Height - bottomOffset;
             }
-            for (var index = 1; index < controls.Count(); index++)
+            for (int index = 1; index < controls.Count(); index++)
             {
                 controls[index].Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 controls[index].Top = baseControl.Top + baseControl.Height - controls[index].Height;
@@ -397,7 +397,7 @@ namespace CADToolsGUI.Classes
         public static void CenterControlsHorizontally(Control[] controls)
         {
             Control controlObj;
-            for (var index = 0; index < controls.Count() - 1; index++)
+            for (int index = 0; index < controls.Count() - 1; index++)
             {
                 controlObj = controls[index];
                 controlObj.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -412,7 +412,7 @@ namespace CADToolsGUI.Classes
         public static void CenterControlsVertically(Control[] controls)
         {
             Control controlObj;
-            for (var index = 0; index < controls.Count() - 1; index++)
+            for (int index = 0; index < controls.Count() - 1; index++)
             {
                 controlObj = controls[index];
                 controlObj.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -437,8 +437,8 @@ namespace CADToolsGUI.Classes
             // Подбор ширины контейнера производится по крайнему правому элементу.
             if (fitSizeMode == FitSizeMode.FitWidth | fitSizeMode == FitSizeMode.FitWidthAndHeight)
             {
-                var rightBorderLocation = 0;
-                var widthCorrection = 0;
+                int rightBorderLocation = 0;
+                int widthCorrection = 0;
                 if (CheckControlType(container, typeof(Form)))
                 {
                     widthCorrection = GUISizes.LEFT_CORRECTION;
@@ -452,8 +452,8 @@ namespace CADToolsGUI.Classes
             // Подбор высоты контейнера производится по крайнему нижнему элементу.
             if (fitSizeMode == FitSizeMode.FitHeight | fitSizeMode == FitSizeMode.FitWidthAndHeight)
             {
-                var bottomBorderLocation = 0;
-                var heightCorrection = 0;
+                int bottomBorderLocation = 0;
+                int heightCorrection = 0;
                 if (CheckControlType(container, typeof(Form)))
                 {
                     heightCorrection = GUISizes.TOP_CORRECTION;
@@ -506,7 +506,7 @@ namespace CADToolsGUI.Classes
         /// <param name="startIndex">Начальное значение индекса.</param>
         public static void SetTabIndex(Control[] controls, int startIndex = 0)
         {
-            for (var index = startIndex; index < controls.Count(); index++)
+            for (int index = startIndex; index < controls.Count(); index++)
             {
                 controls[index].TabIndex = index;
             }
@@ -538,7 +538,7 @@ namespace CADToolsGUI.Classes
         /// <returns>Если тип элемента интерфейса совпадает с ожидаемым типом, то возвращается True.</returns>
         static bool CheckControlType(Control control, System.Type type)
         {
-            var resultValue = false;
+            bool resultValue = false;
             if (control.GetType() == type || control.GetType().BaseType == type)
             {
                 resultValue = true;
