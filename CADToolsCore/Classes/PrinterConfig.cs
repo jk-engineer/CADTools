@@ -69,16 +69,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Структура DEVMODE принтера.
         /// </summary>
-        public IntPtr DevModeData
-        {
-            get { return _devModeData; }
-            set { _devModeData = value; }
-        }
-
-        /// <summary>
-        /// Имя принтера по умолчанию.
-        /// </summary>
-        private string _defaultPrinterName;
+        public IntPtr DevModeData { get => _devModeData; set => _devModeData = value; }
 
         /// <summary>
         /// Имя принтера по умолчанию.
@@ -87,7 +78,7 @@ namespace CADToolsCore.Classes
         {
             get
             {
-                GetPrinterNames(out _defaultPrinterName);
+                GetPrinterNames(out string _defaultPrinterName);
                 return _defaultPrinterName;
             }
         }
@@ -95,15 +86,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Настройки печати.
         /// </summary>
-        private PrinterSettings _printerSettings;
-
-        /// <summary>
-        /// Настройки печати.
-        /// </summary>
-        public PrinterSettings PrinterSettings
-        {
-            get { return _printerSettings; }
-        }
+        public PrinterSettings PrinterSettings { get; private set; }
 
         #endregion
 
@@ -117,10 +100,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Вызывает событие <see cref="PrinterSettingsChanged"/>.
         /// </summary>
-        protected virtual void OnPrinterSettingsChanged()
-        {
-            PrinterSettingsChanged?.Invoke();
-        }
+        protected virtual void OnPrinterSettingsChanged() => PrinterSettingsChanged?.Invoke();
 
         #endregion
 
@@ -161,13 +141,13 @@ namespace CADToolsCore.Classes
             if (returnCode == ID_CANCEL)
             {
                 ResetPrinterSettings();
-                _printerSettings.PrinterName = printerName;
+                PrinterSettings.PrinterName = printerName;
             }
             // Сохранение новых настроек принтера.
             if (_devModeData != IntPtr.Zero)
             {
-                _printerSettings.SetHdevmode(_devModeData);
-                _printerSettings.DefaultPageSettings.SetHdevmode(_devModeData);
+                PrinterSettings.SetHdevmode(_devModeData);
+                PrinterSettings.DefaultPageSettings.SetHdevmode(_devModeData);
             }
             OnPrinterSettingsChanged();
         }
@@ -182,8 +162,8 @@ namespace CADToolsCore.Classes
         {
             IntPtr resultValue;
             // Выделение памяти для хранения настроек принтера.
-            _printerSettings.PrinterName = printerName;
-            IntPtr hDevMode = _printerSettings.GetHdevmode(_printerSettings.DefaultPageSettings);
+            PrinterSettings.PrinterName = printerName;
+            IntPtr hDevMode = PrinterSettings.GetHdevmode(PrinterSettings.DefaultPageSettings);
             IntPtr pDevMode = GlobalLock(hDevMode);
             // Получение размера памяти, необходимой для хранения данных драйвера принтера.
             int bufferSize = DocumentProperties(formHandle, IntPtr.Zero, printerName, IntPtr.Zero, pDevMode, F_MODE);
@@ -198,10 +178,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="printerName">Имя принтера.</param>
         /// <returns></returns>
-        public IntPtr GetPrinterHdc(string printerName)
-        {
-            return CreateDC(IntPtr.Zero, printerName, IntPtr.Zero, _devModeData);
-        }
+        public IntPtr GetPrinterHdc(string printerName) => CreateDC(IntPtr.Zero, printerName, IntPtr.Zero, _devModeData);
 
         /// <summary>
         /// Возвращает имена принтеров, установленных в системе.
@@ -228,7 +205,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         public void ResetPrinterSettings()
         {
-            _printerSettings = new PrinterSettings();
+            PrinterSettings = new PrinterSettings();
             UnlockMemory(ref _devModeData);
         }
 
@@ -250,10 +227,7 @@ namespace CADToolsCore.Classes
 
         #region Финализация
 
-        ~PrinterConfig()
-        {
-            UnlockMemory(ref _devModeData);
-        }
+        ~PrinterConfig() => UnlockMemory(ref _devModeData);
 
         #endregion
     }

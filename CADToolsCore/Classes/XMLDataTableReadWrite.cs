@@ -35,30 +35,22 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Таблица данных.
         /// </summary>
-        private DataTable _dataTableObject;
-
-        /// <summary>
-        /// Таблица данных.
-        /// </summary>
-        public DataTable DataTableObject
-        {
-            get { return _dataTableObject; }
-        }
+        public DataTable DataTableObject { get; private set; }
 
         /// <summary>
         /// Полное имя файла с таблицей данных.
         /// </summary>
-        private string _fullFileName;
+        private readonly string _fullFileName;
 
         /// <summary>
         /// Имя файла с таблицей данных.
         /// </summary>
-        private string _fileName;
+        private readonly string _fileName;
 
         /// <summary>
         /// Имя таблицы данных.
         /// </summary>
-        private string _tableName;
+        private readonly string _tableName;
 
         #endregion
 
@@ -72,10 +64,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Вызывает событие <see cref="DataLoaded"/>.
         /// </summary>
-        protected virtual void OnDataLoaded()
-        {
-            DataLoaded?.Invoke();
-        }
+        protected virtual void OnDataLoaded() => DataLoaded?.Invoke();
 
         /// <summary>
         /// Происходит после сохранения данных в файл.
@@ -85,10 +74,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Вызывает событие <see cref="DataSaved"/>.
         /// </summary>
-        protected virtual void OnDataSaved()
-        {
-            DataSaved?.Invoke();
-        }
+        protected virtual void OnDataSaved() => DataSaved?.Invoke();
 
         #endregion
 
@@ -121,8 +107,8 @@ namespace CADToolsCore.Classes
             {
                 try
                 {
-                    _dataTableObject.ReadXml(_fullFileName);
-                    _dataTableObject.TableName = _tableName;
+                    DataTableObject.ReadXml(_fullFileName);
+                    DataTableObject.TableName = _tableName;
                     OnDataLoaded();
                 }
                 catch (System.Exception)
@@ -140,7 +126,7 @@ namespace CADToolsCore.Classes
         {
             try
             {
-                _dataTableObject.WriteXml(_fullFileName);
+                DataTableObject.WriteXml(_fullFileName);
                 OnDataSaved();
             }
             catch (System.Exception)
@@ -155,8 +141,8 @@ namespace CADToolsCore.Classes
         /// <param name="dataTable">Таблица данных.</param>
         public virtual void SaveDataTable(DataTable dataTable)
         {
-            _dataTableObject = dataTable;
-            _dataTableObject.TableName = _tableName;
+            DataTableObject = dataTable;
+            DataTableObject.TableName = _tableName;
             SaveDataTable();
         }
 
@@ -167,12 +153,14 @@ namespace CADToolsCore.Classes
         /// <param name="columnValues">Набор значений в таблице по столбцам.</param>
         public void SaveDataTableFromColumnValues(string[] columnNames, List<string[]> columnValues)
         {
-            var resultDataTable = new DataTable();
-            resultDataTable.TableName = _tableName;
+            var resultDataTable = new DataTable
+            {
+                TableName = _tableName
+            };
             // Создание столбцов.
             resultDataTable.Columns.AddRange(columnNames.Select(colName => new DataColumn(colName)).ToArray());
             // Для правильного заполнения строк таблицы необходимо определить наибольшую длину строкового массива в наборе.
-            var rowCount = 0;
+            int rowCount = 0;
             try
             {
                 rowCount = columnValues.Select(arrayObj => arrayObj.Count()).Max();
@@ -183,7 +171,7 @@ namespace CADToolsCore.Classes
                 return;
             }
             // Добавление в таблицу строк с пустыми ячейками.
-            for (var index = 0; index < rowCount; index++)
+            for (int index = 0; index < rowCount; index++)
             {
                 resultDataTable.Rows.Add(columnNames.Select(value => string.Empty));
             }
@@ -191,10 +179,10 @@ namespace CADToolsCore.Classes
             string[] columnValuesArray;
             try
             {
-                for (var columnIndex = 0; columnIndex < columnNames.Count(); columnIndex++)
+                for (int columnIndex = 0; columnIndex < columnNames.Count(); columnIndex++)
                 {
                     columnValuesArray = columnValues[columnIndex];
-                    for (var rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
+                    for (int rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
                     {
                         resultDataTable.Rows[rowIndex][columnIndex] = columnValuesArray[rowIndex];
                     }
@@ -206,7 +194,7 @@ namespace CADToolsCore.Classes
                 return;
             }
             // Запись таблицы данных в файл.
-            _dataTableObject = resultDataTable;
+            DataTableObject = resultDataTable;
             SaveDataTable();
         }
 
@@ -217,12 +205,14 @@ namespace CADToolsCore.Classes
         /// <param name="rowValues">Набор значений в таблице по строкам.</param>
         public void SaveDataTableFromRowValues(string[] columnNames, List<string> rowValues)
         {
-            var resultDataTable = new DataTable();
-            resultDataTable.TableName = _tableName;
+            var resultDataTable = new DataTable
+            {
+                TableName = _tableName
+            };
             // Создание столбцов.
             resultDataTable.Columns.AddRange(columnNames.Select(colName => new DataColumn(colName)).ToArray());
             // Заполнение строк таблицы. В случае необходимости добавляются недостающие столбцы.
-            for (var rowIndex = 0; rowIndex < rowValues.Count(); rowIndex++)
+            for (int rowIndex = 0; rowIndex < rowValues.Count(); rowIndex++)
             {
                 if (rowValues[rowIndex].Count() > resultDataTable.Columns.Count)
                 {
@@ -231,17 +221,15 @@ namespace CADToolsCore.Classes
                 resultDataTable.Rows.Add(rowValues[rowIndex]);
             }
             // Запись таблицы данных в файл.
-            _dataTableObject = resultDataTable;
+            DataTableObject = resultDataTable;
             SaveDataTable();
         }
 
         /// <summary>
         /// Выводит сообщение об ошибке при обработке массивов.
         /// </summary>
-        private void WrongArrayMessage()
-        {
+        private void WrongArrayMessage() =>
             MessageBox.Show("Неверный набор строковых массивов", "Ошибка", MessageBoxButtons.OK);
-        }
 
         #endregion
     }

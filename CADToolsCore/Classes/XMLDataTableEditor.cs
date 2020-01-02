@@ -35,12 +35,12 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Таблица данных.
         /// </summary>
-        private DataTable _dataTable;
+        private readonly DataTable _dataTable;
 
         /// <summary>
         /// Список значений ячеек строк исходной таблицы.
         /// </summary>
-        private List<object[]> _sourceRowsValues = new List<object[]>();
+        private readonly List<object[]> _sourceRowsValues = new List<object[]>();
 
         #endregion
 
@@ -84,12 +84,12 @@ namespace CADToolsCore.Classes
             var newIndices = rowIndices.Select(rowIndex => rowIndex + offset).ToArray();
             var newRowsValues = new List<object[]>(new object[_sourceRowsValues.Count - 1][]);
             // Копирование выделенных строк.
-            for (var index = 0; index < rowIndices.Count(); index++)
+            for (int index = 0; index < rowIndices.Count(); index++)
             {
                 newRowsValues[newIndices[index]] = _sourceRowsValues[rowIndices[index]];
             }
             // Копирование остальных строк.
-            for (var rowIndex = 0; rowIndex < _sourceRowsValues.Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < _sourceRowsValues.Count; rowIndex++)
             {
                 // Пропуск строк, которые были выделены в исходной таблице.
                 if (rowIndices.Contains(rowIndex))
@@ -97,7 +97,7 @@ namespace CADToolsCore.Classes
                     continue;
                 }
                 // Поиск первой свободной позиции в новом списке и копирование в нее текущей строки.
-                for (var index = 0; index < newRowsValues.Count; index++)
+                for (int index = 0; index < newRowsValues.Count; index++)
                 {
                     if (newRowsValues[index] != null)
                     {
@@ -155,7 +155,7 @@ namespace CADToolsCore.Classes
             sortedColumnValues = sortedColumnValues.Distinct().ToList();
             sortedColumnValues.Sort();
             var sortedRowsValues = new List<object[]>();
-            for (var index = 0; index < sortedColumnValues.Count; index++)
+            for (int index = 0; index < sortedColumnValues.Count; index++)
             {
                 sortedRowsValues.AddRange(_sourceRowsValues.Where(values => values[index] == sortedColumnValues[index]));
             }
@@ -168,19 +168,13 @@ namespace CADToolsCore.Classes
         /// Сортирует строки таблицы по значениям ячеек в указанном столбце.
         /// </summary>
         /// <param name="columnName">Имя столбца, по значениям ячеек которого производится сортировка.</param>
-        public virtual void SortRows(string columnName)
-        {
-            SortRows(GetColumnIndex(columnName));
-        }
+        public virtual void SortRows(string columnName) => SortRows(GetColumnIndex(columnName));
 
         /// <summary>
         /// Сортирует строки таблицы по значениям ячеек в указанном столбце.
         /// </summary>
         /// <param name="dataColumn">Столбец таблицы, по значениям ячеек которого производится сортировка.</param>
-        public virtual void SortRows(DataColumn dataColumn)
-        {
-            SortRows(GetColumnIndex(dataColumn));
-        }
+        public virtual void SortRows(DataColumn dataColumn) => SortRows(GetColumnIndex(dataColumn));
 
         /// <summary>
         /// Изменяет порядок строк в таблице на обратный.
@@ -198,7 +192,7 @@ namespace CADToolsCore.Classes
         public void AddRows(int rowCount)
         {
             rowCount = AbsIndices.Invoke(rowCount);
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
             {
                 _dataTable.Rows.Add(_dataTable.NewRow());
             }
@@ -217,7 +211,7 @@ namespace CADToolsCore.Classes
             // Вместо этого итоговая таблица получается следующим образом:
             // 1) исходная таблица очищается (при этом значения ячеек остаются в резервной переменной).
             // 2) из резервной переменной в таблицу копируются только те строки, индексы которых не совпадают с индексами выбранных строк.
-            for (var rowIndex = 0; rowIndex < _sourceRowsValues.Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < _sourceRowsValues.Count; rowIndex++)
             {
                 if (rowIndices.Contains(rowIndex))
                 {
@@ -241,12 +235,12 @@ namespace CADToolsCore.Classes
         public virtual List<string> GetColumnValues(DataColumn dataColumn, bool removeEmptyValues)
         {
             var resultValue = new List<string>();
-            var cellValue = string.Empty;
+            string cellValue;
             object checkValue;
             var dataTableObject = dataColumn.Table;
             try
             {
-                for (var rowIndex = 0; rowIndex < dataTableObject.Rows.Count; rowIndex++)
+                for (int rowIndex = 0; rowIndex < dataTableObject.Rows.Count; rowIndex++)
                 {
                     checkValue = dataTableObject.Rows[rowIndex][dataColumn];
                     cellValue = (checkValue == null) ? string.Empty : checkValue.ToString();
@@ -313,7 +307,7 @@ namespace CADToolsCore.Classes
         public virtual int GetColumnIndex(string columnName)
         {
             var resultValue = -1;
-            for (var columnIndex = 0; columnIndex < _dataTable.Columns.Count; columnIndex++)
+            for (int columnIndex = 0; columnIndex < _dataTable.Columns.Count; columnIndex++)
             {
                 if (_dataTable.Columns[columnIndex].ColumnName.ToLower() == columnName.ToLower())
                 {
@@ -329,10 +323,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="dataColumn">Столбец таблицы.</param>
         /// <returns></returns>
-        public virtual int GetColumnIndex(DataColumn dataColumn)
-        {
-            return GetColumnIndex(dataColumn.ColumnName);
-        }
+        public virtual int GetColumnIndex(DataColumn dataColumn) => GetColumnIndex(dataColumn.ColumnName);
 
         #endregion
 
@@ -354,7 +345,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         private bool RowIndicesIsOK(int[] rowIndices)
         {
-            var resultValue = true;
+            bool resultValue = true;
             if (rowIndices == null || !rowIndices.Any())
             {
                 resultValue = false;
@@ -373,7 +364,7 @@ namespace CADToolsCore.Classes
             {
                 _dataTable.Clear();
             }
-            for (var rowIndex = 0; rowIndex < rowsValues.Count(); rowIndex++)
+            for (int rowIndex = 0; rowIndex < rowsValues.Count(); rowIndex++)
             {
                 _dataTable.Rows.Add(rowsValues[rowIndex]);
             }
@@ -382,10 +373,8 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Выводит сообщение об ошибке обращения к столбцу таблицы.
         /// </summary>
-        private void ShowColumnError()
-        {
+        private void ShowColumnError() =>
             MessageBox.Show("Не удалось найти заданный столбец", "Ошибка", MessageBoxButtons.OK);
-        }
 
         #endregion
     }

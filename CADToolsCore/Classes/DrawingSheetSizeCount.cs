@@ -35,31 +35,23 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Коллекция, содержащая счетчик листов каждого из форматов.
         /// </summary>
-        private Dictionary<DrawingSheetSize.DrawingSheetSizeEnum, int> _sheetSizeCount =
+        private readonly Dictionary<DrawingSheetSize.DrawingSheetSizeEnum, int> _sheetSizeCount =
             new Dictionary<DrawingSheetSize.DrawingSheetSizeEnum, int>();
 
         /// <summary>
         /// Площадь формата А4 в квадратных миллиметрах.
         /// </summary>
-        private int _a4SizeArea = DrawingSheetSizeManager.GetSheetSizeArea(DrawingSheetSize.DrawingSheetSizeEnum.A4);
-
-        /// <summary>
-        /// Суммарное количество форматов А4 для всех чертежей.
-        /// </summary>
-        private int _summaryA4SizeCount = 0;
-
-        /// <summary>
-        /// Возвращает суммарное количество форматов А4 для всех чертежей.
-        /// </summary>
-        public int SummaryA4SizeCount
-        {
-            get { return _summaryA4SizeCount; }
-        }
+        private readonly int _a4SizeArea = DrawingSheetSizeManager.GetSheetSizeArea(DrawingSheetSize.DrawingSheetSizeEnum.A4);
 
         /// <summary>
         /// Значения перечисления форматов чертежа.
         /// </summary>
-        private System.Array _sheetSizeValues = DrawingSheetSizeManager.SheetSizeValues;
+        private readonly System.Array _sheetSizeValues = DrawingSheetSizeManager.SheetSizeValues;
+
+        /// <summary>
+        /// Возвращает суммарное количество форматов А4 для всех чертежей.
+        /// </summary>
+        public int SummaryA4SizeCount { get; private set; } = 0;
 
         #endregion
 
@@ -73,10 +65,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Вызывает событие <see cref="SheetSizeCounted"/>.
         /// </summary>
-        protected virtual void OnSheetSizeCounted()
-        {
-            SheetSizeCounted?.Invoke();
-        }
+        protected virtual void OnSheetSizeCounted() => SheetSizeCounted?.Invoke();
 
         #endregion
 
@@ -102,12 +91,12 @@ namespace CADToolsCore.Classes
         /// Выполняет подсчет количества форматов чертежей.
         /// </summary>
         /// <param name="drawingCollection">Коллекция чертежей.</param>
-        public void CountSizes(DocumentsCollection<IDrawingDocument> drawingCollection)
+        public void CountSizes(IDocumentsCollection<IDrawingDocument> drawingCollection)
         {
             // Обнуление счетчиков.
             ResetSheetSizeCounts();
             // Подсчет количества форматов.
-            foreach (var draw in drawingCollection.Values)
+            foreach (IDrawingDocument draw in drawingCollection.Values)
             {
                 foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
                 {
@@ -121,7 +110,7 @@ namespace CADToolsCore.Classes
             foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
             {
                 sheetSizeArea = DrawingSheetSizeManager.GetSheetSizeArea(size);
-                _summaryA4SizeCount += (int)System.Math.Round((double)(sheetSizeArea / _a4SizeArea)) * _sheetSizeCount[size];
+                SummaryA4SizeCount += (int)System.Math.Round((double)(sheetSizeArea / _a4SizeArea)) * _sheetSizeCount[size];
             }
             // Сигнал о завершении подсчета.
             OnSheetSizeCounted();
@@ -132,10 +121,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
         /// <returns></returns>
-        public int GetSheetSizeCount(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize)
-        {
-            return _sheetSizeCount[drawingSheetSize];
-        }
+        public int GetSheetSizeCount(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) => _sheetSizeCount[drawingSheetSize];
 
         /// <summary>
         /// Возвращает строковое представление счетчика форматов чертежей.
@@ -146,7 +132,7 @@ namespace CADToolsCore.Classes
             var resultValue = string.Empty;
             for (var index = 0; index < _sheetSizeCount.Count(); index++)
             {
-                // Пропуск нулевых значений счетчика (для повышения читаемости данных).
+                // Пропуск нулевых значений счетчика (для улучшения читаемости данных).
                 if (_sheetSizeCount.Values.ElementAt(index) == 0)
                 {
                     continue;
@@ -162,7 +148,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         private void ResetSheetSizeCounts()
         {
-            _summaryA4SizeCount = 0;
+            SummaryA4SizeCount = 0;
             foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
             {
                 _sheetSizeCount[size] = 0;

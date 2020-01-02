@@ -93,46 +93,36 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         /// <returns></returns>
-        public static bool RunFileFromCallingAssemblyLocation(string fileName)
-        {
-            return RunFile(GetFullFileNameFromCallingAssemblyLocation(fileName));
-        }
+        public static bool RunFileFromCallingAssemblyLocation(string fileName) =>
+            RunFile(GetFullFileNameFromCallingAssemblyLocation(fileName));
 
         /// <summary>
         /// Выводит сообщение об ошибке создания файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
-        public static void ShowCreateFileError(string fileName)
-        {
+        public static void ShowCreateFileError(string fileName) =>
             MessageBox.Show("Не удалось создать файл " + fileName, "Ошибка", MessageBoxButtons.OK);
-        }
 
         /// <summary>
         /// Выводит сообщение об ошибке удаления файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
-        public static void ShowDeleteFileError(string fileName)
-        {
+        public static void ShowDeleteFileError(string fileName) =>
             MessageBox.Show("Не удалось удалить файл " + fileName, "Ошибка", MessageBoxButtons.OK);
-        }
 
         /// <summary>
         /// Выводит сообщение об ошибке открытия файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
-        public static void ShowOpenFileError(string fileName)
-        {
+        public static void ShowOpenFileError(string fileName) =>
             MessageBox.Show("Не удалось открыть файл " + fileName, "Ошибка", MessageBoxButtons.OK);
-        }
 
         /// <summary>
         /// Выводит сообщение об ошибке сохранения файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
-        public static void ShowSaveFileError(string fileName)
-        {
+        public static void ShowSaveFileError(string fileName) =>
             MessageBox.Show("Не удалось сохранить файл " + fileName, "Ошибка", MessageBoxButtons.OK);
-        }
 
         #endregion
     }

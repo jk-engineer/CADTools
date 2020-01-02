@@ -37,10 +37,8 @@ namespace CADToolsCore.Classes
         /// <param name="document">Документ CAD-системы.</param>
         /// <param name="documentTypes">Типы документов для проверки.</param>
         /// <returns></returns>
-        public static bool Invoke(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes)
-        {
-            return documentTypes.Contains(document.Type);
-        }
+        public static bool Invoke(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes) =>
+            documentTypes.Contains(document.Type);
 
         #endregion
     }
