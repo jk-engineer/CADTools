@@ -34,10 +34,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="indices">Исходный массив индексов.</param>
         /// <returns></returns>
-        public static int[] Invoke(int[] indices)
-        {
-            return indices.Select(val => System.Math.Abs(val)).ToArray();
-        }
+        public static int[] Invoke(int[] indices) => indices.Select(val => System.Math.Abs(val)).ToArray();
 
         /// <summary>
         /// Возвращает неотрицательный индекс.
