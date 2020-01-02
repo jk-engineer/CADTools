@@ -136,7 +136,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="document">Документ.</param>
         /// <returns></returns>
-        public bool Contains(TDocument document) => this.Contains(document.FullFileName);
+        public bool Contains(TDocument document) => Contains(document.FullFileName);
 
         /// <summary>
         /// Выполняет копирование элементов коллекции в массив, начиная с указанного индекса.
@@ -153,11 +153,11 @@ namespace CADToolsCore.Classes
             {
                 throw new ArgumentOutOfRangeException("Недопустимое значение индекса.");
             }
-            if (array.Length - arrayIndex < this.Count)
+            if (array.Length - arrayIndex < Count)
             {
                 throw new ArgumentException("Недостаточно элементов в массиве для выполнения копирования.");
             }
-            for (int index = 0; index < this.Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 array[index + arrayIndex] = this[index];
             }
@@ -189,7 +189,7 @@ namespace CADToolsCore.Classes
         /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
         /// </summary>
         /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// Возвращает массив с именами файлов документов.
@@ -204,7 +204,7 @@ namespace CADToolsCore.Classes
         /// <returns></returns>
         public string GetFullFileName(string documentFileName)
         {
-            TDocument doc = this.GetDocumentByName(documentFileName);
+            TDocument doc = GetDocumentByName(documentFileName);
             return (doc != null) ? doc.FullFileName : String.Empty;
         }
 
@@ -227,14 +227,14 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="document">Документ.</param>
         /// <returns></returns>
-        public bool Remove(TDocument document) => this.Remove(document.FullFileName);
+        public bool Remove(TDocument document) => Remove(document.FullFileName);
 
         /// <summary>
         /// Удаляет документ с указанным индексом из коллекции.
         /// </summary>
         /// <param name="index">Индекс.</param>
         /// <returns></returns>
-        public bool Remove(int index) => this.Remove(this[index]);
+        public bool Remove(int index) => Remove(this[index]);
 
         /// <summary>
         /// Получает документ с указанным именем файла.
