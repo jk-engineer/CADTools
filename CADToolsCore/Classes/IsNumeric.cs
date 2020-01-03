@@ -18,7 +18,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
-using System;
 using System.Windows.Forms;
 
 namespace CADToolsCore.Classes
@@ -39,7 +38,7 @@ namespace CADToolsCore.Classes
         {
             bool resultValue = true;
             // Проверка на число.
-            if (!Double.TryParse(expression, out _))
+            if (!double.TryParse(expression, out _))
             {
                 if (showError)
                 {
@@ -48,7 +47,7 @@ namespace CADToolsCore.Classes
                 resultValue = false;
             }
             // Проверка на целочисленность.
-            if (checkInteger && !Int32.TryParse(expression, out _))
+            if (checkInteger && !int.TryParse(expression, out _))
             {
                 if (showError)
                 {

@@ -205,7 +205,7 @@ namespace CADToolsCore.Classes
         public string GetFullFileName(string documentFileName)
         {
             TDocument doc = GetDocumentByName(documentFileName);
-            return (doc != null) ? doc.FullFileName : String.Empty;
+            return (doc != null) ? doc.FullFileName : string.Empty;
         }
 
         /// <summary>

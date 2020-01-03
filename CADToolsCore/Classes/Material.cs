@@ -18,7 +18,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
-using System;
 using CADToolsCore.Interfaces;
 
 namespace CADToolsCore.Classes
@@ -43,8 +42,8 @@ namespace CADToolsCore.Classes
             get
             {
                 string resultValue = Name;
-                resultValue += (String.IsNullOrWhiteSpace(AssortmentSize)) ? String.Empty : Separator + AssortmentSize;
-                resultValue += (String.IsNullOrWhiteSpace(Standard)) ? String.Empty : Separator + Standard;
+                resultValue += (string.IsNullOrWhiteSpace(AssortmentSize)) ? string.Empty : Separator + AssortmentSize;
+                resultValue += (string.IsNullOrWhiteSpace(Standard)) ? string.Empty : Separator + Standard;
                 return resultValue;
             }
         }
