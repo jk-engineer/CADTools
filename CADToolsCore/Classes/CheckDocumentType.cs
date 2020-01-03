@@ -34,10 +34,10 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Возвращает <see cref="true"/> при совпадении типа документа хотя бы с одним из указанных типов.
         /// </summary>
-        /// <param name="document">Документ CAD-системы.</param>
+        /// <param name="document">Документ.</param>
         /// <param name="documentTypes">Типы документов для проверки.</param>
         /// <returns></returns>
-        public static bool Invoke(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes) =>
+        public static bool CheckType(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes) =>
             documentTypes.Contains(document.Type);
 
         #endregion

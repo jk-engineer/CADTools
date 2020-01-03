@@ -24,7 +24,7 @@ using CADToolsCore.Enumerators;
 namespace CADToolsCore.Interfaces
 {
     /// <summary>
-    /// Документ CAD-системы.
+    /// Документ.
     /// </summary>
     public interface IDocument
     {

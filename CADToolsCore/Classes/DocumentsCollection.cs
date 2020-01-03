@@ -30,7 +30,7 @@ namespace CADToolsCore.Classes
     /// <summary>
     /// Коллекция документов. В качестве ключей используются полные имена файлов документов.
     /// </summary>
-    /// <typeparam name="TDocument">Документ CAD-системы.</typeparam>
+    /// <typeparam name="TDocument">Документ.</typeparam>
     public class DocumentsCollection<TDocument> : IDocumentsCollection<TDocument> where TDocument : IDocument
     {
         #region Поля, свойства

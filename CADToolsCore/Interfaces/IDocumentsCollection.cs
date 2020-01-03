@@ -26,7 +26,7 @@ namespace CADToolsCore.Interfaces
     /// <summary>
     /// Коллекция документов. В качестве ключей используются полные имена файлов документов.
     /// </summary>
-    /// <typeparam name="TDocument">Документ CAD-системы.</typeparam>
+    /// <typeparam name="TDocument">Документ.</typeparam>
     public interface IDocumentsCollection<TDocument> : ICollection<TDocument> where TDocument : IDocument
     {
         /// <summary>

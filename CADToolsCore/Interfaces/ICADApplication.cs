@@ -30,7 +30,7 @@ namespace CADToolsCore.Interfaces
         #region Свойства
 
         /// <summary>
-        /// Активный документ CAD-системы.
+        /// Активный Документ.
         /// </summary>
         IDocument ActiveDocument { get; }
 
