@@ -72,7 +72,7 @@ namespace CADToolsCore.Classes
             {
                 return;
             }
-            rowIndices = AbsIndices.Invoke(rowIndices);
+            rowIndices = AbsIndices.GetIndexArray(rowIndices);
             // Для предотвращения выхода за пределы таблицы производится проверка величины сдвига строк.
             if (rowIndices.First() + offset < 0 | rowIndices.Last() + offset > _sourceRowsValues.Count - 1)
             {
@@ -145,7 +145,7 @@ namespace CADToolsCore.Classes
         public virtual void SortRows(int columnIndex)
         {
             // Проверка индекса столбца.
-            columnIndex = AbsIndices.Invoke(columnIndex, _dataTable.Columns.Count - 1);
+            columnIndex = AbsIndices.GetIndex(columnIndex, _dataTable.Columns.Count - 1);
             // Сортировка строк производится в несколько этапов:
             // 1) считываются значения из указанного столбца, удаляются повторяющиеся значения, выполняется сортировка значений.
             // 2) берется первое значение из отсортированного списка, из таблицы выбираются все строки, в которых значения ячеек
@@ -191,7 +191,7 @@ namespace CADToolsCore.Classes
         /// <param name="rowCount">Количество строк, которое необходимо добавить.</param>
         public void AddRows(int rowCount)
         {
-            rowCount = AbsIndices.Invoke(rowCount);
+            rowCount = AbsIndices.GetIndex(rowCount);
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
             {
                 _dataTable.Rows.Add(_dataTable.NewRow());
@@ -205,7 +205,7 @@ namespace CADToolsCore.Classes
         /// <param name="rowIndices">Индексы строк, которые необходимо удалить.</param>
         public void DeleteRows(int[] rowIndices)
         {
-            rowIndices = AbsIndices.Invoke(rowIndices);
+            rowIndices = AbsIndices.GetIndexArray(rowIndices);
             // При непосредственном удалении строк после удаления первой же выделенной строки индексы остальных строк изменяются,
             // что потребует сложной логики для сохранения правильных индексов.
             // Вместо этого итоговая таблица получается следующим образом:
@@ -287,7 +287,7 @@ namespace CADToolsCore.Classes
         public virtual List<string> GetColumnValues(int columnIndex, bool removeEmptyValues)
         {
             var resultValue = new List<string>();
-            columnIndex = AbsIndices.Invoke(columnIndex);
+            columnIndex = AbsIndices.GetIndex(columnIndex);
             try
             {
                 resultValue = GetColumnValues(_dataTable.Columns[columnIndex], removeEmptyValues);

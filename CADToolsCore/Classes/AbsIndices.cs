@@ -34,7 +34,7 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="indices">Исходный массив индексов.</param>
         /// <returns></returns>
-        public static int[] Invoke(int[] indices) => indices.Select(val => System.Math.Abs(val)).ToArray();
+        public static int[] GetIndexArray(int[] indices) => indices.Select(val => System.Math.Abs(val)).ToArray();
 
         /// <summary>
         /// Возвращает неотрицательный индекс.
@@ -43,16 +43,18 @@ namespace CADToolsCore.Classes
         /// <param name="maxIndex">Максимальное значение индекса. Задайте значение, отличное от -1,
         /// чтобы ограничить максимальное возвращаемое значение индекса.</param>
         /// <returns></returns>
-        public static int Invoke(int index, int maxIndex = -1)
+        public static int GetIndex(int index, int maxIndex = -1)
         {
             int resultValue;
-            if ((maxIndex != -1) && (System.Math.Abs(index) > System.Math.Abs(maxIndex)))
+            int maxAbsIndex = System.Math.Abs(maxIndex);
+            int absIndex = System.Math.Abs(index);
+            if ((maxIndex != -1) && (absIndex > maxAbsIndex))
             {
-                resultValue = System.Math.Abs(maxIndex);
+                resultValue = maxAbsIndex;
             }
             else
             {
-                resultValue = System.Math.Abs(index);
+                resultValue = absIndex;
             }
             return resultValue;
         }
