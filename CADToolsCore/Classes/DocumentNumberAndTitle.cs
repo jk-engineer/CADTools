@@ -40,7 +40,7 @@ namespace CADToolsCore.Classes
         public static void Split(string documentName, string separator, int occurenceNumber,
                                  out string documentNumber, out string documentTitle)
         {
-            if ((documentName == null) || (separator == null))
+            if (string.IsNullOrEmpty(documentName) || string.IsNullOrEmpty(separator))
             {
                 documentNumber = string.Empty;
                 documentTitle = string.Empty;
