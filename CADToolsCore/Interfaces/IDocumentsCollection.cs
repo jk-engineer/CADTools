@@ -71,14 +71,14 @@ namespace CADToolsCore.Interfaces
         /// </summary>
         /// <param name="documentFileName">Имя файла искомого документа.</param>
         /// <returns></returns>
-        TDocument GetDocumentByName(string documentFileName);
+        TDocument GetValueByName(string documentFileName);
 
         /// <summary>
         /// Возвращает коллекцию документов заданного типа.
         /// </summary>
         /// <param name="documentTypes">Набор требуемых типов документов.</param>
         /// <returns></returns>
-        IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes);
+        IDocumentsCollection<TDocument> GetValuesByType(DocumentType.DocumentTypeEnum[] documentTypes);
 
         /// <summary>
         /// Возвращает массив с именами файлов документов.

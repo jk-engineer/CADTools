@@ -18,7 +18,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,14 +48,22 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public TDocument this[string fullFileName] => _documents[fullFileName];
+        public TDocument this[string fullFileName]
+        {
+            get
+            {
+                TryGetValue(fullFileName, out TDocument document);
+                return document;
+            }
+        }
 
         /// <summary>
         /// Возвращает документ по указанному индексу.
         /// </summary>
         /// <param name="index">Индекс.</param>
         /// <returns></returns>
-        public TDocument this[int index] => _documents.ElementAt(index).Value;
+        public TDocument this[int index] =>
+            (index > 0) & (index < _documents.Count) ? _documents.ElementAt(index).Value : default;
 
         /// <summary>
         /// Возвращает число документов в коллекции.
@@ -96,6 +103,10 @@ namespace CADToolsCore.Classes
         /// <param name="documents">Коллекция, элементы которой копируются в новый экземпляр класса.</param>
         public DocumentsCollection(IDocumentsCollection<TDocument> documents) : this()
         {
+            if (documents == null)
+            {
+                return;
+            }
             foreach (TDocument doc in documents)
             {
                 _documents.Add(doc.FullFileName, doc);
@@ -112,6 +123,10 @@ namespace CADToolsCore.Classes
         /// <param name="document">Документ.</param>
         public void Add(TDocument document)
         {
+            if (document == null)
+            {
+                return;
+            }
             string fullFileName = document.FullFileName;
             if (!_documents.ContainsKey(fullFileName))
             {
@@ -129,14 +144,15 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public bool Contains(string fullFileName) => _documents.ContainsKey(fullFileName);
+        public bool Contains(string fullFileName) =>
+            !string.IsNullOrEmpty(fullFileName) ? _documents.ContainsKey(fullFileName) : false;
 
         /// <summary>
         /// Определяет, содержится ли документ в коллекции.
         /// </summary>
         /// <param name="document">Документ.</param>
         /// <returns></returns>
-        public bool Contains(TDocument document) => Contains(document.FullFileName);
+        public bool Contains(TDocument document) => Contains(document?.FullFileName);
 
         /// <summary>
         /// Выполняет копирование элементов коллекции в массив, начиная с указанного индекса.
@@ -145,17 +161,9 @@ namespace CADToolsCore.Classes
         /// <param name="arrayIndex">Индекс в массиве, начиная с которого заполняется массив.</param>
         public void CopyTo(TDocument[] array, int arrayIndex)
         {
-            if (array == null)
+            if ((array == null) || (arrayIndex < 0) || (array.Length - arrayIndex < Count))
             {
-                throw new ArgumentNullException("Ошибка обращения к массиву.");
-            }
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("Недопустимое значение индекса.");
-            }
-            if (array.Length - arrayIndex < Count)
-            {
-                throw new ArgumentException("Недостаточно элементов в массиве для выполнения копирования.");
+                return;
             }
             for (int index = 0; index < Count; index++)
             {
@@ -168,16 +176,20 @@ namespace CADToolsCore.Classes
         /// </summary>
         /// <param name="documentFileName">Имя файла искомого документа.</param>
         /// <returns></returns>
-        public TDocument GetDocumentByName(string documentFileName) =>
-            _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault();
+        public TDocument GetValueByName(string documentFileName) =>
+            !string.IsNullOrEmpty(documentFileName) ?
+            _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault() :
+            default;
 
         /// <summary>
         /// Возвращает коллекцию документов заданного типа.
         /// </summary>
         /// <param name="documentTypes">Набор требуемых типов документов.</param>
         /// <returns></returns>
-        public IDocumentsCollection<TDocument> GetDocumentsByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
-            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type));
+        public IDocumentsCollection<TDocument> GetValuesByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
+            documentTypes != null ?
+            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type)) :
+            (IDocumentsCollection<TDocument>)new SortedDictionary<string, TDocument>().Values.Select(doc => doc);
 
         /// <summary>
         /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
@@ -195,39 +207,39 @@ namespace CADToolsCore.Classes
         /// Возвращает массив с именами файлов документов.
         /// </summary>
         /// <returns></returns>
-        public string[] GetFileNames() => _documents.Keys.Select(key => System.IO.Path.GetFileName(key)).ToArray();
+        public string[] GetFileNames() =>
+            _documents.Keys.Select(key => System.IO.Path.GetFileName(key)).ToArray();
 
         /// <summary>
         /// Возвращает полное имя файла документа, если он содержится в коллекции.
         /// </summary>
         /// <param name="documentFileName">Имя файла искомого документа.</param>
         /// <returns></returns>
-        public string GetFullFileName(string documentFileName)
-        {
-            TDocument doc = GetDocumentByName(documentFileName);
-            return (doc != null) ? doc.FullFileName : string.Empty;
-        }
+        public string GetFullFileName(string documentFileName) =>
+            GetValueByName(documentFileName)?.FullFileName ?? string.Empty;
 
         /// <summary>
         /// Возвращает индекс документа в коллекции по его имени файла.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public int GetIndexByKey(string fullFileName) => _documents.Keys.ToList().IndexOf(fullFileName);
+        public int GetIndexByKey(string fullFileName) =>
+            !string.IsNullOrEmpty(fullFileName) ? _documents.Keys.ToList().IndexOf(fullFileName) : -1;
 
         /// <summary>
         /// Удаляет документ с указанным именем файла из коллекции.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
-        public bool Remove(string fullFileName) => _documents.Remove(fullFileName);
+        public bool Remove(string fullFileName) =>
+            !string.IsNullOrEmpty(fullFileName) ? _documents.Remove(fullFileName) : false;
 
         /// <summary>
         /// Удаляет документ из коллекции.
         /// </summary>
         /// <param name="document">Документ.</param>
         /// <returns></returns>
-        public bool Remove(TDocument document) => Remove(document.FullFileName);
+        public bool Remove(TDocument document) => Remove(document?.FullFileName);
 
         /// <summary>
         /// Удаляет документ с указанным индексом из коллекции.
@@ -242,7 +254,20 @@ namespace CADToolsCore.Classes
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <param name="document">Возвращаемый документ.</param>
         /// <returns></returns>
-        public bool TryGetValue(string fullFileName, out TDocument document) => _documents.TryGetValue(fullFileName, out document);
+        public bool TryGetValue(string fullFileName, out TDocument document)
+        {
+            bool resultValue;
+            if (!string.IsNullOrEmpty(fullFileName))
+            {
+                resultValue = _documents.TryGetValue(fullFileName, out document);
+            }
+            else
+            {
+                document = default;
+                resultValue = false;
+            }
+            return resultValue;
+        }
 
         #endregion
     }

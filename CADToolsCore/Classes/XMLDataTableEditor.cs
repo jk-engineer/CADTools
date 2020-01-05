@@ -72,7 +72,7 @@ namespace CADToolsCore.Classes
             {
                 return;
             }
-            rowIndices = AbsIndices.GetIndexArray(rowIndices);
+            rowIndices = AbsIndices.GetIndices(rowIndices);
             // Для предотвращения выхода за пределы таблицы производится проверка величины сдвига строк.
             if (rowIndices.First() + offset < 0 | rowIndices.Last() + offset > _sourceRowsValues.Count - 1)
             {
@@ -205,7 +205,7 @@ namespace CADToolsCore.Classes
         /// <param name="rowIndices">Индексы строк, которые необходимо удалить.</param>
         public void DeleteRows(int[] rowIndices)
         {
-            rowIndices = AbsIndices.GetIndexArray(rowIndices);
+            rowIndices = AbsIndices.GetIndices(rowIndices);
             // При непосредственном удалении строк после удаления первой же выделенной строки индексы остальных строк изменяются,
             // что потребует сложной логики для сохранения правильных индексов.
             // Вместо этого итоговая таблица получается следующим образом:

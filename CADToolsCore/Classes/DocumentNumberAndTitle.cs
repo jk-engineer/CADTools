@@ -40,6 +40,12 @@ namespace CADToolsCore.Classes
         public static void Split(string documentName, string separator, int occurenceNumber,
                                  out string documentNumber, out string documentTitle)
         {
+            if ((documentName == null) || (separator == null))
+            {
+                documentNumber = string.Empty;
+                documentTitle = string.Empty;
+                return;
+            }
             // Разделение имени документа на подстроки.
             string[] separatedDocumentName = documentName.Split(new string[] { separator },
                                                                 System.StringSplitOptions.RemoveEmptyEntries);
