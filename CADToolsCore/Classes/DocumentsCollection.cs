@@ -63,7 +63,7 @@ namespace CADToolsCore.Classes
         /// <param name="index">Индекс.</param>
         /// <returns></returns>
         public TDocument this[int index] =>
-            (index > 0) & (index < _documents.Count) ? _documents.ElementAt(index).Value : default;
+            (index >= 0) & (index < _documents.Count) ? _documents.ElementAt(index).Value : default;
 
         /// <summary>
         /// Возвращает число документов в коллекции.
@@ -92,10 +92,7 @@ namespace CADToolsCore.Classes
         /// <summary>
         /// Новый экземпляр класса.
         /// </summary>
-        public DocumentsCollection()
-        {
-            _documents = new SortedDictionary<string, TDocument>();
-        }
+        public DocumentsCollection() => _documents = new SortedDictionary<string, TDocument>();
 
         /// <summary>
         /// Новый экземпляр класса.
@@ -103,10 +100,7 @@ namespace CADToolsCore.Classes
         /// <param name="documents">Коллекция, элементы которой копируются в новый экземпляр класса.</param>
         public DocumentsCollection(IDocumentsCollection<TDocument> documents) : this()
         {
-            if (documents == null)
-            {
-                return;
-            }
+            if (documents == null) return;
             foreach (TDocument doc in documents)
             {
                 _documents.Add(doc.FullFileName, doc);
@@ -123,10 +117,7 @@ namespace CADToolsCore.Classes
         /// <param name="document">Документ.</param>
         public void Add(TDocument document)
         {
-            if (document == null)
-            {
-                return;
-            }
+            if (document == null) return;
             string fullFileName = document.FullFileName;
             if (!_documents.ContainsKey(fullFileName))
             {
@@ -161,10 +152,7 @@ namespace CADToolsCore.Classes
         /// <param name="arrayIndex">Индекс в массиве, начиная с которого заполняется массив.</param>
         public void CopyTo(TDocument[] array, int arrayIndex)
         {
-            if ((array == null) || (arrayIndex < 0) || (array.Length - arrayIndex < Count))
-            {
-                return;
-            }
+            if ((array == null) || (arrayIndex < 0) || (array.Length - arrayIndex < Count)) return;
             for (int index = 0; index < Count; index++)
             {
                 array[index + arrayIndex] = this[index];
