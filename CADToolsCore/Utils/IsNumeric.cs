@@ -34,7 +34,7 @@ namespace CADToolsCore.Utils
         /// <param name="checkInteger">Проверить на целочисленность.</param>
         /// <param name="showError">Показать предупреждение о неверном вводе выражения.</param>
         /// <returns></returns>
-        public static bool Invoke(string expression, bool checkInteger, bool showError)
+        public static bool Check(string expression, bool checkInteger = false, bool showError = false)
         {
             bool resultValue = true;
             // Проверка на число.

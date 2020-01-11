@@ -35,11 +35,14 @@ namespace CADToolsCore.Utils
         /// <param name="question">Текст запроса.</param>
         /// <param name="caption">Заголовок окна запроса.</param>
         /// <returns></returns>
-        public static bool Invoke(string question, string caption)
+        public static bool GetAnswer(string question, string caption)
         {
             bool resultValue = false;
-            DialogResult answer = MessageBox.Show(question, caption, MessageBoxButtons.YesNo);
-            if (answer == DialogResult.Yes) resultValue = true;
+            if (!string.IsNullOrEmpty(question) & !string.IsNullOrEmpty(caption))
+            {
+                DialogResult answer = MessageBox.Show(question, caption, MessageBoxButtons.YesNo);
+                if (answer == DialogResult.Yes) resultValue = true;
+            }
             return resultValue;
         }
 

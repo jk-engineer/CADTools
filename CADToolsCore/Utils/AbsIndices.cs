@@ -35,7 +35,7 @@ namespace CADToolsCore.Utils
         /// <param name="indices">Исходный массив индексов.</param>
         /// <returns></returns>
         public static int[] GetIndices(int[] indices) =>
-            indices?.Select(val => System.Math.Abs(val)).ToArray() ?? new int[] { };
+            indices?.Select(value => System.Math.Abs(value)).ToArray() ?? new int[] { };
 
         /// <summary>
         /// Возвращает неотрицательный индекс.

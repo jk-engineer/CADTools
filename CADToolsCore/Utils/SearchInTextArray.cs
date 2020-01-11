@@ -37,7 +37,7 @@ namespace CADToolsCore.Utils
         /// <returns>Производит поиск выражения в каждой строке исходного массива и возвращает в виде массива только те строки,
         /// которые содержат искомое выражение</returns>
         public static string[] Search(string[] textArray, string expression) =>
-            textArray.Where(textValue => textValue.ToLower().Contains(expression.ToLower())).ToArray();
+            textArray?.Where(textValue => textValue?.ToLower().Contains(expression?.ToLower()) ?? false).ToArray() ?? new string[] { };
 
         #endregion
     }
