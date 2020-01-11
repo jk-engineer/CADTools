@@ -104,7 +104,7 @@ namespace CADToolsCore.DataTable
         public System.Data.DataTable GetDataTable()
         {
             var resultValue = new System.Data.DataTable();
-            if (FileManager.CheckFileExist(_fullFileName, true))
+            if (FileManager.CheckFileExists(_fullFileName, true))
             {
                 try
                 {

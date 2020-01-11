@@ -39,9 +39,9 @@ namespace CADToolsCore.Material
         {
             get
             {
-                string resultValue = Name;
-                resultValue += string.IsNullOrWhiteSpace(AssortmentSize) ? string.Empty : Separator + AssortmentSize;
-                resultValue += string.IsNullOrWhiteSpace(Standard) ? string.Empty : Separator + Standard;
+                string resultValue = Name ?? string.Empty;
+                resultValue += Separator + AssortmentSize ?? string.Empty;
+                resultValue += Separator + Standard ?? string.Empty;
                 return resultValue;
             }
         }
@@ -59,7 +59,7 @@ namespace CADToolsCore.Material
         /// <summary>
         /// Символ-разделитель, используемый в названии материала.
         /// </summary>
-        public string Separator { get; }
+        public string Separator { get; private set; }
 
         #endregion
 
@@ -71,11 +71,13 @@ namespace CADToolsCore.Material
         /// <param name="name">Название материала или проката.</param>
         /// <param name="assortmentSize">Типоразмер проката.</param>
         /// <param name="standard">Обозначение стандарта на прокат.</param>
-        public Material(string name, string assortmentSize, string standard) : this()
+        /// <param name="separator">Символ-разделитель, используемый в названии материала.</param>
+        public Material(string name, string assortmentSize, string standard, string separator) : this()
         {
-            Name = name;
-            AssortmentSize = assortmentSize;
-            Standard = standard;
+            Name = name ?? string.Empty;
+            AssortmentSize = assortmentSize ?? string.Empty;
+            Standard = standard ?? string.Empty;
+            Separator = separator ?? string.Empty;
         }
 
         #endregion

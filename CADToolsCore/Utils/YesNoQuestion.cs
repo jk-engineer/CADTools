@@ -38,7 +38,7 @@ namespace CADToolsCore.Utils
         public static bool GetAnswer(string question, string caption)
         {
             bool resultValue = false;
-            if (!string.IsNullOrEmpty(question) & !string.IsNullOrEmpty(caption))
+            if (!string.IsNullOrWhiteSpace(question) & !string.IsNullOrWhiteSpace(caption))
             {
                 DialogResult answer = MessageBox.Show(question, caption, MessageBoxButtons.YesNo);
                 if (answer == DialogResult.Yes) resultValue = true;

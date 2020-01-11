@@ -61,7 +61,7 @@ namespace CADToolsCore.Document
         /// <param name="index">Индекс.</param>
         /// <returns></returns>
         public TDocument this[int index] =>
-            index >= 0 & index < _documents.Count ? _documents.ElementAt(index).Value : default;
+            (index >= 0) & (index < _documents.Count) ? _documents.ElementAt(index).Value : default;
 
         /// <summary>
         /// Возвращает число документов в коллекции.
@@ -101,7 +101,7 @@ namespace CADToolsCore.Document
             if (documents == null) return;
             foreach (TDocument doc in documents)
             {
-                _documents.Add(doc.FullFileName, doc);
+                Add(doc);
             }
         }
 
@@ -158,26 +158,6 @@ namespace CADToolsCore.Document
         }
 
         /// <summary>
-        /// Возвращает документ по его полному или частичному имени.
-        /// </summary>
-        /// <param name="documentFileName">Имя файла искомого документа.</param>
-        /// <returns></returns>
-        public TDocument GetValueByName(string documentFileName) =>
-            !string.IsNullOrEmpty(documentFileName) ?
-            _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault() :
-            default;
-
-        /// <summary>
-        /// Возвращает коллекцию документов заданного типа.
-        /// </summary>
-        /// <param name="documentTypes">Набор требуемых типов документов.</param>
-        /// <returns></returns>
-        public IDocumentsCollection<TDocument> GetValuesByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
-            documentTypes != null ?
-            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type)) :
-            (IDocumentsCollection<TDocument>)new SortedDictionary<string, TDocument>().Values.Select(doc => doc);
-
-        /// <summary>
         /// Возвращает перечислитель, осуществляющий перебор документов коллекции.
         /// </summary>
         /// <returns></returns>
@@ -205,12 +185,32 @@ namespace CADToolsCore.Document
             GetValueByName(documentFileName)?.FullFileName ?? string.Empty;
 
         /// <summary>
+        /// Возвращает коллекцию документов заданного типа.
+        /// </summary>
+        /// <param name="documentTypes">Набор требуемых типов документов.</param>
+        /// <returns></returns>
+        public IDocumentsCollection<TDocument> GetValuesByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
+            documentTypes != null ?
+            (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type)) :
+            (IDocumentsCollection<TDocument>)new SortedDictionary<string, TDocument>().Values.Select(doc => doc);
+
+        /// <summary>
         /// Возвращает индекс документа в коллекции по его имени файла.
         /// </summary>
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <returns></returns>
         public int GetIndexByKey(string fullFileName) =>
             !string.IsNullOrEmpty(fullFileName) ? _documents.Keys.ToList().IndexOf(fullFileName) : -1;
+
+        /// <summary>
+        /// Возвращает документ по его полному или частичному имени.
+        /// </summary>
+        /// <param name="documentFileName">Имя файла искомого документа.</param>
+        /// <returns></returns>
+        public TDocument GetValueByName(string documentFileName) =>
+            !string.IsNullOrEmpty(documentFileName) ?
+            _documents.Values.Where(doc => doc.FullFileName.ToLower().Contains(documentFileName.ToLower())).FirstOrDefault() :
+            default;
 
         /// <summary>
         /// Удаляет документ с указанным именем файла из коллекции.

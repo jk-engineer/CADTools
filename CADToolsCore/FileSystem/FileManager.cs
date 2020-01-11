@@ -37,10 +37,16 @@ namespace CADToolsCore.FileSystem
         /// <param name="fullFileName">Полное имя файла.</param>
         /// <param name="createFile">Создать файл при его отсутствии (создается файл текстового типа).</param>
         /// <returns></returns>
-        public static bool CheckFileExist(string fullFileName, bool createFile)
+        public static bool CheckFileExists(string fullFileName, bool createFile = false)
         {
             bool resultValue = System.IO.File.Exists(fullFileName);
-            string fileName = System.IO.Path.GetFileName(fullFileName);
+            string fileName = string.Empty;
+            try
+            {
+                fileName = System.IO.Path.GetFileName(fullFileName) ?? string.Empty;
+            }
+            catch (System.ArgumentException)
+            { }
             if (!resultValue & createFile)
             {
                 MessageBox.Show("Файл " + fileName + " не найден и будет создан заново", "Ошибка", MessageBoxButtons.OK);
@@ -63,8 +69,15 @@ namespace CADToolsCore.FileSystem
         /// <returns></returns>
         public static string GetFullFileNameFromCallingAssemblyLocation(string fileName)
         {
+            string resultValue = string.Empty;
             string callingAssemblyPath = System.IO.Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            return System.IO.Path.Combine(new string[] { callingAssemblyPath, fileName });
+            try
+            {
+                resultValue = System.IO.Path.Combine(new string[] { callingAssemblyPath, fileName ?? string.Empty });
+            }
+            catch (System.ArgumentException)
+            { }
+            return resultValue;
         }
 
         /// <summary>
@@ -75,6 +88,13 @@ namespace CADToolsCore.FileSystem
         public static bool RunFile(string fullFileName)
         {
             bool resultValue = false;
+            string fileName = string.Empty;
+            try
+            {
+                fileName = System.IO.Path.GetFileName(fullFileName);
+            }
+            catch (System.ArgumentException)
+            { }
             try
             {
                 Process.Start(fullFileName);
@@ -82,7 +102,7 @@ namespace CADToolsCore.FileSystem
             }
             catch (System.Exception)
             {
-                ShowOpenFileError(System.IO.Path.GetFileName(fullFileName));
+                ShowOpenFileError(fileName);
             }
             return resultValue;
         }
@@ -101,28 +121,28 @@ namespace CADToolsCore.FileSystem
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowCreateFileError(string fileName) =>
-            MessageBox.Show("Не удалось создать файл " + fileName, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show("Не удалось создать файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке удаления файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowDeleteFileError(string fileName) =>
-            MessageBox.Show("Не удалось удалить файл " + fileName, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show("Не удалось удалить файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке открытия файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowOpenFileError(string fileName) =>
-            MessageBox.Show("Не удалось открыть файл " + fileName, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show("Не удалось открыть файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке сохранения файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowSaveFileError(string fileName) =>
-            MessageBox.Show("Не удалось сохранить файл " + fileName, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show("Не удалось сохранить файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
 
         #endregion
     }
