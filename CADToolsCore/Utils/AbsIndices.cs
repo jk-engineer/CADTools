@@ -48,7 +48,7 @@ namespace CADToolsCore.Utils
         {
             int maxAbsIndex = System.Math.Abs(maxIndex);
             int absIndex = System.Math.Abs(index);
-            return maxIndex != -1 && absIndex > maxAbsIndex ? maxAbsIndex : absIndex;
+            return (maxIndex != -1) && (absIndex > maxAbsIndex) ? maxAbsIndex : absIndex;
         }
 
         #endregion

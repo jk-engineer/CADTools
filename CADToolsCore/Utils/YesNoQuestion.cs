@@ -39,10 +39,7 @@ namespace CADToolsCore.Utils
         {
             bool resultValue = false;
             DialogResult answer = MessageBox.Show(question, caption, MessageBoxButtons.YesNo);
-            if (answer == DialogResult.Yes)
-            {
-                resultValue = true;
-            }
+            if (answer == DialogResult.Yes) resultValue = true;
             return resultValue;
         }
 

@@ -40,19 +40,13 @@ namespace CADToolsCore.Utils
             // Проверка на число.
             if (!double.TryParse(expression, out _))
             {
-                if (showError)
-                {
-                    MessageBox.Show("Введите число", "Ошибка", MessageBoxButtons.OK);
-                }
+                if (showError) MessageBox.Show("Введите число", "Ошибка", MessageBoxButtons.OK);
                 resultValue = false;
             }
             // Проверка на целочисленность.
             if (checkInteger && !int.TryParse(expression, out _))
             {
-                if (showError)
-                {
-                    MessageBox.Show("Введите целое число", "Ошибка", MessageBoxButtons.OK);
-                }
+                if (showError) MessageBox.Show("Введите целое число", "Ошибка", MessageBoxButtons.OK);
                 resultValue = false;
             }
             return resultValue;
