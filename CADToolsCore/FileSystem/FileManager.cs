@@ -49,7 +49,7 @@ namespace CADToolsCore.FileSystem
             { }
             if (!resultValue & createFile)
             {
-                MessageBox.Show("Файл " + fileName + " не найден и будет создан заново", "Ошибка", MessageBoxButtons.OK);
+                MessageBox.Show($"Файл {fileName} не найден и будет создан заново", "Ошибка", MessageBoxButtons.OK);
                 try
                 {
                     System.IO.File.WriteAllText(fullFileName, string.Empty);
@@ -121,28 +121,28 @@ namespace CADToolsCore.FileSystem
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowCreateFileError(string fileName) =>
-            MessageBox.Show("Не удалось создать файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show($"Не удалось создать файл {fileName ?? string.Empty}", "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке удаления файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowDeleteFileError(string fileName) =>
-            MessageBox.Show("Не удалось удалить файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show($"Не удалось удалить файл {fileName ?? string.Empty}", "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке открытия файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowOpenFileError(string fileName) =>
-            MessageBox.Show("Не удалось открыть файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show($"Не удалось открыть файл {fileName ?? string.Empty}", "Ошибка", MessageBoxButtons.OK);
 
         /// <summary>
         /// Выводит сообщение об ошибке сохранения файла.
         /// </summary>
         /// <param name="fileName">Имя файла.</param>
         public static void ShowSaveFileError(string fileName) =>
-            MessageBox.Show("Не удалось сохранить файл " + fileName ?? string.Empty, "Ошибка", MessageBoxButtons.OK);
+            MessageBox.Show($"Не удалось сохранить файл {fileName ?? string.Empty}", "Ошибка", MessageBoxButtons.OK);
 
         #endregion
     }
