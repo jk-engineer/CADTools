@@ -21,12 +21,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 namespace CADToolsCore.Document.DrawingDocument
 {
     /// <summary>
-    /// Формат листа чертежа согласно ГОСТ 2.301-68.
+    /// Формат листа чертежа согласно ГОСТ 2.301.
     /// </summary>
     public static class DrawingSheetSize
     {
         /// <summary>
-        /// Формат листа чертежа согласно ГОСТ 2.301-68.
+        /// Формат листа чертежа согласно ГОСТ 2.301.
         /// </summary>
         public enum DrawingSheetSizeEnum
         {

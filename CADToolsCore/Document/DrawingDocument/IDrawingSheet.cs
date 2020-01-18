@@ -43,7 +43,7 @@ namespace CADToolsCore.Document.DrawingDocument
         IDrawingDocument Parent { get; }
 
         /// <summary>
-        /// Формат листа чертежа согласно ГОСТ 2.301-68.
+        /// Формат листа чертежа согласно ГОСТ 2.301.
         /// </summary>
         DrawingSheetSize.DrawingSheetSizeEnum Size { get; }
 

@@ -117,7 +117,7 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Возвращает количество листов указанного формата.
         /// </summary>
-        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
+        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301.</param>
         /// <returns></returns>
         public int GetSheetSizeCount(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) => _sheetSizeCount[drawingSheetSize];
 

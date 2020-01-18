@@ -138,7 +138,7 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Возвращает имя указанного формата.
         /// </summary>
-        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
+        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301.</param>
         /// <returns></returns>
         public static string GetSheetSizeName(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) =>
             System.Enum.GetName(typeof(DrawingSheetSize.DrawingSheetSizeEnum), drawingSheetSize);
@@ -146,7 +146,7 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Возвращает высоту указанного формата в миллиметрах (для альбомной ориентации).
         /// </summary>
-        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
+        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301.</param>
         /// <returns></returns>
         public static int GetSheetSizeHeight(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) =>
             _heightList[drawingSheetSize];
@@ -154,7 +154,7 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Возвращает ширину указанного формата в миллиметрах (для альбомной ориентации).
         /// </summary>
-        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
+        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301.</param>
         /// <returns></returns>
         public static int GetSheetSizeWidth(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) =>
             _widthList[drawingSheetSize];
@@ -162,7 +162,7 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Возвращает площадь указанного формата в квадратных миллиметрах.
         /// </summary>
-        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301-68.</param>
+        /// <param name="drawingSheetSize">Формат листа чертежа согласно ГОСТ 2.301.</param>
         /// <returns></returns>
         public static int GetSheetSizeArea(DrawingSheetSize.DrawingSheetSizeEnum drawingSheetSize) =>
             GetSheetSizeHeight(drawingSheetSize) * GetSheetSizeWidth(drawingSheetSize);
