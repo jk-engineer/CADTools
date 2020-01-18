@@ -154,7 +154,12 @@ namespace CADToolsCore.Document.DrawingDocument
             /// <summary>
             /// Формат А4x9.
             /// </summary>
-            A4x9
+            A4x9,
+
+            /// <summary>
+            /// Нестандартный формат.
+            /// </summary>
+            NonStandard
         }
     }
 }

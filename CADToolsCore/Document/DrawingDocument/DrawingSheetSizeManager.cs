@@ -80,7 +80,8 @@ namespace CADToolsCore.Document.DrawingDocument
             297,
             297,
             297,
-            297
+            297,
+            -1
         };
 
         /// <summary>
@@ -111,7 +112,8 @@ namespace CADToolsCore.Document.DrawingDocument
             1261,
             1471,
             1682,
-            1892
+            1892,
+            -1
         };
 
         #endregion
@@ -134,6 +136,52 @@ namespace CADToolsCore.Document.DrawingDocument
         #endregion
 
         #region Методы
+
+        /// <summary>
+        /// Возвращает формат листа чертежа согласно ГОСТ 2.301.
+        /// </summary>
+        /// <param name="height">Высота листа в миллиметрах.</param>
+        /// <param name="width">Ширина листа в миллиметрах.</param>
+        /// <returns></returns>
+        public static DrawingSheetSize.DrawingSheetSizeEnum GetSheetSize(int height, int width)
+        {
+            // Возвращает результат проверки соответствия размера формата листа требованиям ГОСТ 2.301.
+            bool CheckSize(int checkValue, int standardValue)
+            {
+                bool result;
+                if ((checkValue <= 150) & (System.Math.Abs(standardValue - checkValue) <= 1.5))
+                {
+                    result = true;
+                }
+                else if ((checkValue > 150) & (checkValue <= 600) & (System.Math.Abs(standardValue - checkValue) <= 2.0))
+                {
+                    result = true;
+                }
+                else if ((checkValue > 600) & (System.Math.Abs(standardValue - checkValue) <= 3.0))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+                return result;
+            }
+
+            var resultValue = DrawingSheetSize.DrawingSheetSizeEnum.NonStandard;
+            foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _heightList.Keys)
+            {
+                int standardHeight = _heightList[size];
+                int standardWidth = _widthList[size];
+                // Проверяются альбомные и портретные ориентации листа.
+                if ((CheckSize(height, standardHeight) & CheckSize(width, standardWidth)) ||
+                    (CheckSize(height, standardWidth) & CheckSize(width, standardHeight)))
+                {
+                    resultValue = size;
+                }
+            }
+            return resultValue;
+        }
 
         /// <summary>
         /// Возвращает имя указанного формата.
