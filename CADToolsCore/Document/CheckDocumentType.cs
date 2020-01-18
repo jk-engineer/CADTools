@@ -36,7 +36,7 @@ namespace CADToolsCore.Document
         /// <param name="documentTypes">Типы документов для проверки.</param>
         /// <returns></returns>
         public static bool CheckType(IDocument document, DocumentType.DocumentTypeEnum[] documentTypes) =>
-            documentTypes != null && document != null ? documentTypes.Contains(document.Type) : false;
+            ((documentTypes != null) && (document != null)) ? documentTypes.Contains(document.Type) : false;
 
         #endregion
     }

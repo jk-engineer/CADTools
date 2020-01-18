@@ -43,7 +43,7 @@ namespace CADToolsCore.FileSystem
             string fileName = string.Empty;
             try
             {
-                fileName = System.IO.Path.GetFileName(fullFileName) ?? string.Empty;
+                fileName = System.IO.Path.GetFileName(fullFileName);
             }
             catch (System.ArgumentException)
             { }

@@ -52,7 +52,7 @@ namespace CADToolsCore.Document
 
             // Для обращения к элементам массива вводится переменная,
             // при этом ее значение не должно выходить за границы строкового массива.
-            int substringCount = occurenceNumber > separatedDocumentName.Count() ? separatedDocumentName.Count() : occurenceNumber;
+            int substringCount = (occurenceNumber > separatedDocumentName.Count()) ? separatedDocumentName.Count() : occurenceNumber;
             string[] separatedPartNumber = separatedDocumentName.ToList().GetRange(0, substringCount).ToArray();
 
             // Обозначение документа.

@@ -61,7 +61,7 @@ namespace CADToolsCore.Document
         /// <param name="index">Индекс.</param>
         /// <returns></returns>
         public TDocument this[int index] =>
-            (index >= 0) & (index < _documents.Count) ? _documents.ElementAt(index).Value : default;
+            ((index >= 0) & (index < _documents.Count)) ? _documents.ElementAt(index).Value : default;
 
         /// <summary>
         /// Возвращает число документов в коллекции.
@@ -98,7 +98,10 @@ namespace CADToolsCore.Document
         /// <param name="documents">Коллекция, элементы которой копируются в новый экземпляр класса.</param>
         public DocumentsCollection(IDocumentsCollection<TDocument> documents) : this()
         {
-            if (documents == null) return;
+            if (documents == null)
+            {
+                return;
+            }
             foreach (TDocument doc in documents)
             {
                 Add(doc);
@@ -115,7 +118,10 @@ namespace CADToolsCore.Document
         /// <param name="document">Документ.</param>
         public void Add(TDocument document)
         {
-            if (document == null) return;
+            if (document == null)
+            {
+                return;
+            }
             string fullFileName = document.FullFileName;
             if (!_documents.ContainsKey(fullFileName))
             {
@@ -150,7 +156,10 @@ namespace CADToolsCore.Document
         /// <param name="arrayIndex">Индекс в массиве, начиная с которого заполняется массив.</param>
         public void CopyTo(TDocument[] array, int arrayIndex)
         {
-            if (array == null || arrayIndex < 0 || array.Length - arrayIndex < Count) return;
+            if (array == null || arrayIndex < 0 || array.Length - arrayIndex < Count)
+            {
+                return;
+            }
             for (int index = 0; index < Count; index++)
             {
                 array[index + arrayIndex] = this[index];
@@ -190,7 +199,7 @@ namespace CADToolsCore.Document
         /// <param name="documentTypes">Набор требуемых типов документов.</param>
         /// <returns></returns>
         public IDocumentsCollection<TDocument> GetValuesByType(DocumentType.DocumentTypeEnum[] documentTypes) =>
-            documentTypes != null ?
+            (documentTypes != null) ?
             (IDocumentsCollection<TDocument>)_documents.Values.Where(doc => documentTypes.Contains(doc.Type)) :
             (IDocumentsCollection<TDocument>)new SortedDictionary<string, TDocument>().Values.Select(doc => doc);
 
