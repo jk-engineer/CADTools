@@ -254,7 +254,7 @@ namespace CADToolsCore.Utils
         /// <param name="e"></param>
         private void _worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var worker = (BackgroundWorker)sender;
+            BackgroundWorker worker = (BackgroundWorker)sender;
             for (int index = _loopStartCount; index < _loopEndCount; index++)
             {
                 // Вызов операции.

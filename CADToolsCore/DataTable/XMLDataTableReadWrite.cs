@@ -110,7 +110,7 @@ namespace CADToolsCore.DataTable
         /// <returns></returns>
         public System.Data.DataTable GetDataTable()
         {
-            var resultValue = new System.Data.DataTable();
+            System.Data.DataTable resultValue = new System.Data.DataTable();
             if (FileManager.CheckFileExists(_fullFileName))
             {
                 try
@@ -161,7 +161,7 @@ namespace CADToolsCore.DataTable
         /// <param name="columnValues">Набор значений в таблице по столбцам.</param>
         public void SaveDataTableFromColumnValues(string[] columnNames, List<string[]> columnValues)
         {
-            var resultDataTable = new System.Data.DataTable
+            System.Data.DataTable resultDataTable = new System.Data.DataTable
             {
                 TableName = _tableName
             };
@@ -195,7 +195,7 @@ namespace CADToolsCore.DataTable
         /// <param name="rowValues">Набор значений в таблице по строкам.</param>
         public void SaveDataTableFromRowValues(string[] columnNames, List<string[]> rowValues)
         {
-            var resultDataTable = new System.Data.DataTable
+            System.Data.DataTable resultDataTable = new System.Data.DataTable
             {
                 TableName = _tableName
             };

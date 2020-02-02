@@ -168,7 +168,7 @@ namespace CADToolsCore.Document.DrawingDocument
                 return result;
             }
 
-            var resultValue = DrawingSheetSize.DrawingSheetSizeEnum.NonStandard;
+            DrawingSheetSize.DrawingSheetSizeEnum resultValue = DrawingSheetSize.DrawingSheetSizeEnum.NonStandard;
             foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _heightList.Keys)
             {
                 int standardHeight = _heightList[size];

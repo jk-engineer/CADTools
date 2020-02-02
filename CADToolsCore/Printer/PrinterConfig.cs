@@ -187,9 +187,9 @@ namespace CADToolsCore.Printer
         /// <returns></returns>
         public string[] GetPrinterNames(out string defaultPrinterName)
         {
-            var printSettings = new PrinterSettings();
+            PrinterSettings printSettings = new PrinterSettings();
             // Получение списка установленных принтеров.
-            var printerNames = new List<string>(PrinterSettings.InstalledPrinters.Cast<string>());
+            List<string> printerNames = new List<string>(PrinterSettings.InstalledPrinters.Cast<string>());
             printerNames.Sort();
             // Получение имени принтера по умолчанию.
             defaultPrinterName = printerNames.Where(pName =>
