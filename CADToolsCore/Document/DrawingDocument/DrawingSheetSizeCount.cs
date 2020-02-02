@@ -88,17 +88,24 @@ namespace CADToolsCore.Document.DrawingDocument
         /// <summary>
         /// Выполняет подсчет количества форматов чертежей.
         /// </summary>
-        /// <param name="drawingCollection">Коллекция чертежей.</param>
-        public void CountSizes(IDocumentsCollection<IDrawingDocument> drawingCollection)
+        /// <param name="drawings">Коллекция чертежей.</param>
+        public void CountSizes(IDocumentsCollection<IDrawingDocument> drawings)
         {
             // Обнуление счетчиков.
-            ResetSheetSizeCounts();
-            // Подсчет количества форматов.
-            foreach (IDrawingDocument draw in drawingCollection.Values)
+            SummaryA4SizeCount = 0;
+            foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
             {
-                foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
+                _sheetSizeCount[size] = 0;
+            }
+            // Подсчет количества форматов.
+            foreach (IDrawingDocument draw in drawings?.Values ?? new IDrawingDocument[] { })
+            {
+                foreach (IDrawingSheet sheet in draw?.Sheets ?? new IDrawingSheet[] { })
                 {
-                    _sheetSizeCount[size] += draw.Sheets.Where(sheet => sheet.Size == size).Count();
+                    if (sheet != null)
+                    {
+                        _sheetSizeCount[sheet.Size] += 1;
+                    }
                 }
             }
             // Подсчет общего количества форматов А4 производится следующим образом:
@@ -139,18 +146,6 @@ namespace CADToolsCore.Document.DrawingDocument
                                _sheetSizeCount.Values.ElementAt(index).ToString() + System.Environment.NewLine;
             }
             return resultValue;
-        }
-
-        /// <summary>
-        /// Выполняет обнуление счетчиков.
-        /// </summary>
-        private void ResetSheetSizeCounts()
-        {
-            SummaryA4SizeCount = 0;
-            foreach (DrawingSheetSize.DrawingSheetSizeEnum size in _sheetSizeValues)
-            {
-                _sheetSizeCount[size] = 0;
-            }
         }
 
         #endregion

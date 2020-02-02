@@ -81,7 +81,7 @@ namespace CADToolsCore.Document.DrawingDocument
             297,
             297,
             297,
-            -1
+            0
         };
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace CADToolsCore.Document.DrawingDocument
             1471,
             1682,
             1892,
-            -1
+            0
         };
 
         #endregion
