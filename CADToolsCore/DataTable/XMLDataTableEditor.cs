@@ -53,7 +53,7 @@ namespace CADToolsCore.DataTable
         /// <param name="dataTable">Таблица данных.</param>
         public XMLDataTableEditor(System.Data.DataTable dataTable)
         {
-            _dataTable = dataTable;
+            _dataTable = dataTable ?? new System.Data.DataTable();
             UpdateSourceValuesList();
         }
 
@@ -69,21 +69,21 @@ namespace CADToolsCore.DataTable
         /// <param name="rowIndices">Индексы перемещаемых строк.</param>
         public void MoveRows(int offset, int[] rowIndices)
         {
-            if (!RowIndicesIsOK(rowIndices))
+            if (!RowIndicesIsCorrect(rowIndices))
             {
                 return;
             }
             rowIndices = AbsIndices.GetIndices(rowIndices);
             // Для предотвращения выхода за пределы таблицы производится проверка величины сдвига строк.
-            if (rowIndices.First() + offset < 0 | rowIndices.Last() + offset > _sourceRowsValues.Count - 1)
+            if ((rowIndices.First() + offset) < 0 | (rowIndices.Last() + offset) > _sourceRowsValues.Count - 1)
             {
                 return;
             }
-            // Операция сдвига строк выполняется в два этапа:.
+            // Операция сдвига строк выполняется в два этапа:
             // 1) в новый список копируются выбранные строки с новыми значениями индексов.
             // 2) в оставшиеся пустые места копируются по порядку все остальные строки исходной таблицы.
-            var newIndices = rowIndices.Select(rowIndex => rowIndex + offset).ToArray();
-            var newRowsValues = new List<object[]>(new object[_sourceRowsValues.Count - 1][]);
+            int[] newIndices = rowIndices.Select(rowIndex => rowIndex + offset).ToArray();
+            List<object[]> newRowsValues = new List<object[]>(new object[_sourceRowsValues.Count][]);
             // Копирование выделенных строк.
             for (int index = 0; index < rowIndices.Count(); index++)
             {
@@ -117,27 +117,13 @@ namespace CADToolsCore.DataTable
         /// Перемещает строки в начало таблицы.
         /// </summary>
         /// <param name="rowIndices">Индексы перемещаемых строк.</param>
-        public void MoveRowsToBegin(int[] rowIndices)
-        {
-            if (!RowIndicesIsOK(rowIndices))
-            {
-                return;
-            }
-            MoveRows(-rowIndices.First(), rowIndices);
-        }
+        public void MoveRowsToBegin(int[] rowIndices) => MoveRows(-rowIndices?.First() ?? 0, rowIndices);
 
         /// <summary>
         /// Перемещает строки в конец таблицы.
         /// </summary>
         /// <param name="rowIndices">Индексы перемещаемых строк.</param>
-        public void MoveRowsToEnd(int[] rowIndices)
-        {
-            if (!RowIndicesIsOK(rowIndices))
-            {
-                return;
-            }
-            MoveRows(_sourceRowsValues.Count - 1 - rowIndices.Last(), rowIndices);
-        }
+        public void MoveRowsToEnd(int[] rowIndices) => MoveRows(_sourceRowsValues.Count - 1 - rowIndices?.Last() ?? 0, rowIndices);
 
         /// <summary>
         /// Сортирует строки таблицы по значениям ячеек в указанном столбце.
@@ -145,17 +131,15 @@ namespace CADToolsCore.DataTable
         /// <param name="columnIndex">Индекс столбца, по значениям ячеек которого производится сортировка.</param>
         public virtual void SortRows(int columnIndex)
         {
-            // Проверка индекса столбца.
-            columnIndex = AbsIndices.GetIndex(columnIndex, _dataTable.Columns.Count - 1);
             // Сортировка строк производится в несколько этапов:
             // 1) считываются значения из указанного столбца, удаляются повторяющиеся значения, выполняется сортировка значений.
             // 2) берется первое значение из отсортированного списка, из таблицы выбираются все строки, в которых значения ячеек
             //    в указанном столбце совпадают с первым значением отсортированного списка. Найденные строки заносятся в итоговый список.
             // 3) аналогично выполняется заполнение остальных строк таблицы.
-            var sortedColumnValues = new List<object>(GetColumnValues(columnIndex, false));
+            List<object> sortedColumnValues = new List<object>(GetColumnValues(columnIndex));
             sortedColumnValues = sortedColumnValues.Distinct().ToList();
             sortedColumnValues.Sort();
-            var sortedRowsValues = new List<object[]>();
+            List<object[]> sortedRowsValues = new List<object[]>();
             for (int index = 0; index < sortedColumnValues.Count; index++)
             {
                 sortedRowsValues.AddRange(_sourceRowsValues.Where(values => values[index] == sortedColumnValues[index]));
@@ -210,8 +194,9 @@ namespace CADToolsCore.DataTable
             // При непосредственном удалении строк после удаления первой же выделенной строки индексы остальных строк изменяются,
             // что потребует сложной логики для сохранения правильных индексов.
             // Вместо этого итоговая таблица получается следующим образом:
-            // 1) исходная таблица очищается (при этом значения ячеек остаются в резервной переменной).
-            // 2) из резервной переменной в таблицу копируются только те строки, индексы которых не совпадают с индексами выбранных строк.
+            // 1) исходная таблица очищается (при этом значения ячеек остаются в резервной переменной _sourceRowsValues).
+            // 2) из резервной переменной в таблицу копируются только те строки, индексы которых не совпадают с индексами выбранных для удаления строк.
+            _dataTable.Clear();
             for (int rowIndex = 0; rowIndex < _sourceRowsValues.Count; rowIndex++)
             {
                 if (rowIndices.Contains(rowIndex))
@@ -233,30 +218,21 @@ namespace CADToolsCore.DataTable
         /// <param name="dataColumn">Столбец таблицы.</param>
         /// <param name="removeEmptyValues">Удалить из списка пустые значения.</param>
         /// <returns></returns>
-        public virtual List<string> GetColumnValues(DataColumn dataColumn, bool removeEmptyValues)
+        public virtual string[] GetColumnValues(DataColumn dataColumn, bool removeEmptyValues = false)
         {
-            var resultValue = new List<string>();
-            string cellValue;
-            object checkValue;
-            var dataTableObject = dataColumn.Table;
-            try
+            List<string> resultValue = new List<string>();
+            System.Data.DataTable dataTableObject = dataColumn?.Table ?? new System.Data.DataTable();
+            for (int rowIndex = 0; rowIndex < dataTableObject.Rows.Count; rowIndex++)
             {
-                for (int rowIndex = 0; rowIndex < dataTableObject.Rows.Count; rowIndex++)
+                object checkValue = dataTableObject.Rows[rowIndex][dataColumn];
+                string cellValue = checkValue?.ToString() ?? string.Empty;
+                if (removeEmptyValues & string.IsNullOrEmpty(cellValue))
                 {
-                    checkValue = dataTableObject.Rows[rowIndex][dataColumn];
-                    cellValue = checkValue == null ? string.Empty : checkValue.ToString();
-                    if (removeEmptyValues & !cellValue.Any())
-                    {
-                        continue;
-                    }
-                    resultValue.Add(cellValue);
+                    continue;
                 }
+                resultValue.Add(cellValue);
             }
-            catch (System.Exception)
-            {
-                ShowColumnError();
-            }
-            return resultValue;
+            return resultValue.ToArray();
         }
 
         /// <summary>
@@ -265,19 +241,8 @@ namespace CADToolsCore.DataTable
         /// <param name="columnName">Имя столбца.</param>
         /// <param name="removeEmptyValues">Удалить из списка пустые значения.</param>
         /// <returns></returns>
-        public virtual List<string> GetColumnValues(string columnName, bool removeEmptyValues)
-        {
-            var resultValue = new List<string>();
-            try
-            {
-                resultValue = GetColumnValues(_dataTable.Columns[columnName], removeEmptyValues);
-            }
-            catch (System.Exception)
-            {
-                ShowColumnError();
-            }
-            return resultValue;
-        }
+        public virtual string[] GetColumnValues(string columnName, bool removeEmptyValues = false) =>
+            GetColumnValues(_dataTable.Columns[columnName ?? string.Empty], removeEmptyValues);
 
         /// <summary>
         /// Возвращает список значений из указанного столбца таблицы.
@@ -285,19 +250,10 @@ namespace CADToolsCore.DataTable
         /// <param name="columnIndex">Индекс столбца.</param>
         /// <param name="removeEmptyValues">Удалить из списка пустые значения.</param>
         /// <returns></returns>
-        public virtual List<string> GetColumnValues(int columnIndex, bool removeEmptyValues)
+        public virtual string[] GetColumnValues(int columnIndex, bool removeEmptyValues = false)
         {
-            var resultValue = new List<string>();
-            columnIndex = AbsIndices.GetIndex(columnIndex);
-            try
-            {
-                resultValue = GetColumnValues(_dataTable.Columns[columnIndex], removeEmptyValues);
-            }
-            catch (System.Exception)
-            {
-                ShowColumnError();
-            }
-            return resultValue;
+            columnIndex = AbsIndices.GetIndex(columnIndex, _dataTable.Columns.Count - 1);
+            return GetColumnValues(_dataTable.Columns[columnIndex], removeEmptyValues);
         }
 
         /// <summary>
@@ -310,7 +266,7 @@ namespace CADToolsCore.DataTable
             int resultValue = -1;
             for (int columnIndex = 0; columnIndex < _dataTable.Columns.Count; columnIndex++)
             {
-                if (_dataTable.Columns[columnIndex].ColumnName.ToLower() == columnName.ToLower())
+                if (_dataTable.Columns[columnIndex].ColumnName.ToLower() == (columnName?.ToLower() ?? string.Empty))
                 {
                     resultValue = columnIndex;
                     break;
@@ -324,7 +280,7 @@ namespace CADToolsCore.DataTable
         /// </summary>
         /// <param name="dataColumn">Столбец таблицы.</param>
         /// <returns></returns>
-        public virtual int GetColumnIndex(DataColumn dataColumn) => GetColumnIndex(dataColumn.ColumnName);
+        public virtual int GetColumnIndex(DataColumn dataColumn) => GetColumnIndex(dataColumn?.ColumnName ?? string.Empty);
 
         #endregion
 
@@ -344,15 +300,7 @@ namespace CADToolsCore.DataTable
         /// </summary>
         /// <param name="">Индексы строк.</param>
         /// <returns></returns>
-        private bool RowIndicesIsOK(int[] rowIndices)
-        {
-            bool resultValue = true;
-            if (rowIndices == null || !rowIndices.Any())
-            {
-                resultValue = false;
-            }
-            return resultValue;
-        }
+        private bool RowIndicesIsCorrect(int[] rowIndices) => ((rowIndices != null) && rowIndices.Any());
 
         /// <summary>
         /// Заполняет таблицу данными.
@@ -365,17 +313,11 @@ namespace CADToolsCore.DataTable
             {
                 _dataTable.Clear();
             }
-            for (int rowIndex = 0; rowIndex < rowsValues.Count(); rowIndex++)
+            for (int rowIndex = 0; rowIndex < (rowsValues?.Count() ?? 0); rowIndex++)
             {
-                _dataTable.Rows.Add(rowsValues[rowIndex]);
+                _dataTable.Rows.Add(rowsValues[rowIndex] ?? new object[] { });
             }
         }
-
-        /// <summary>
-        /// Выводит сообщение об ошибке обращения к столбцу таблицы.
-        /// </summary>
-        private void ShowColumnError() =>
-            MessageBox.Show("Не удалось найти заданный столбец", "Ошибка", MessageBoxButtons.OK);
 
         #endregion
     }
