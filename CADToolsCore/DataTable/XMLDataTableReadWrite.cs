@@ -88,9 +88,16 @@ namespace CADToolsCore.DataTable
         /// <param name="tableName">Имя таблицы данных.</param>
         public XMLDataTableReadWrite(string fullFileName, string tableName)
         {
-            _fullFileName = fullFileName;
-            _fileName = System.IO.Path.GetFileName(_fullFileName);
-            _tableName = tableName;
+            _fullFileName = fullFileName ?? string.Empty;
+            try
+            {
+                _fileName = System.IO.Path.GetFileName(_fullFileName);
+            }
+            catch (System.ArgumentException)
+            {
+                _fileName = string.Empty;
+            }
+            _tableName = tableName ?? string.Empty;
         }
 
         #endregion
@@ -104,7 +111,7 @@ namespace CADToolsCore.DataTable
         public System.Data.DataTable GetDataTable()
         {
             var resultValue = new System.Data.DataTable();
-            if (FileManager.CheckFileExists(_fullFileName, true))
+            if (FileManager.CheckFileExists(_fullFileName))
             {
                 try
                 {
@@ -142,7 +149,7 @@ namespace CADToolsCore.DataTable
         /// <param name="dataTable">Таблица данных.</param>
         public virtual void SaveDataTable(System.Data.DataTable dataTable)
         {
-            DataTableObject = dataTable;
+            DataTableObject = dataTable ?? new System.Data.DataTable();
             DataTableObject.TableName = _tableName;
             SaveDataTable();
         }
@@ -159,40 +166,22 @@ namespace CADToolsCore.DataTable
                 TableName = _tableName
             };
             // Создание столбцов.
-            resultDataTable.Columns.AddRange(columnNames.Select(colName => new DataColumn(colName)).ToArray());
+            resultDataTable.Columns.AddRange(columnNames?.Select(colName => new DataColumn(colName)).ToArray() ?? new DataColumn[] { });
             // Для правильного заполнения строк таблицы необходимо определить наибольшую длину строкового массива в наборе.
-            int rowCount = 0;
-            try
-            {
-                rowCount = columnValues.Select(arrayObj => arrayObj.Count()).Max();
-            }
-            catch (System.Exception)
-            {
-                WrongArrayMessage();
-                return;
-            }
+            int rowCount = columnValues?.Select(arrayObj => arrayObj?.Count() ?? 0).Max() ?? 0;
             // Добавление в таблицу строк с пустыми ячейками.
             for (int index = 0; index < rowCount; index++)
             {
-                resultDataTable.Rows.Add(columnNames.Select(value => string.Empty));
+                resultDataTable.Rows.Add(columnNames?.Select(value => string.Empty) ?? new string[] { });
             }
             // Заполнение таблицы по столбцам.
-            string[] columnValuesArray;
-            try
+            for (int columnIndex = 0; columnIndex < (columnNames?.Count() ?? 0); columnIndex++)
             {
-                for (int columnIndex = 0; columnIndex < columnNames.Count(); columnIndex++)
+                string[] columnValuesArray = columnValues?[columnIndex] ?? new string[] { };
+                for (int rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
                 {
-                    columnValuesArray = columnValues[columnIndex];
-                    for (int rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
-                    {
-                        resultDataTable.Rows[rowIndex][columnIndex] = columnValuesArray[rowIndex];
-                    }
+                    resultDataTable.Rows[rowIndex][columnIndex] = columnValuesArray[rowIndex];
                 }
-            }
-            catch (System.Exception)
-            {
-                WrongArrayMessage();
-                return;
             }
             // Запись таблицы данных в файл.
             DataTableObject = resultDataTable;
@@ -204,33 +193,27 @@ namespace CADToolsCore.DataTable
         /// </summary>
         /// <param name="columnNames">Имена столбцов в таблице данных.</param>
         /// <param name="rowValues">Набор значений в таблице по строкам.</param>
-        public void SaveDataTableFromRowValues(string[] columnNames, List<string> rowValues)
+        public void SaveDataTableFromRowValues(string[] columnNames, List<string[]> rowValues)
         {
             var resultDataTable = new System.Data.DataTable
             {
                 TableName = _tableName
             };
             // Создание столбцов.
-            resultDataTable.Columns.AddRange(columnNames.Select(colName => new DataColumn(colName)).ToArray());
+            resultDataTable.Columns.AddRange(columnNames?.Select(colName => new DataColumn(colName)).ToArray() ?? new DataColumn[] { });
             // Заполнение строк таблицы. В случае необходимости добавляются недостающие столбцы.
-            for (int rowIndex = 0; rowIndex < rowValues.Count(); rowIndex++)
+            for (int rowIndex = 0; rowIndex < (rowValues?.Count() ?? 0); rowIndex++)
             {
-                if (rowValues[rowIndex].Count() > resultDataTable.Columns.Count)
+                if ((rowValues[rowIndex]?.Count() ?? 0) > resultDataTable.Columns.Count)
                 {
                     resultDataTable.Columns.Add(string.Empty);
                 }
-                resultDataTable.Rows.Add(rowValues[rowIndex]);
+                resultDataTable.Rows.Add(rowValues[rowIndex] ?? new string[] { });
             }
             // Запись таблицы данных в файл.
             DataTableObject = resultDataTable;
             SaveDataTable();
         }
-
-        /// <summary>
-        /// Выводит сообщение об ошибке при обработке массивов.
-        /// </summary>
-        private void WrongArrayMessage() =>
-            MessageBox.Show("Неверный набор строковых массивов", "Ошибка", MessageBoxButtons.OK);
 
         #endregion
     }
