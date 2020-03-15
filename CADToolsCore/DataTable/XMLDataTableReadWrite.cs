@@ -22,7 +22,6 @@ using CADToolsCore.FileSystem;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace CADToolsCore.DataTable
 {
@@ -31,30 +30,6 @@ namespace CADToolsCore.DataTable
     /// </summary>
     public class XMLDataTableReadWrite
     {
-        #region Поля, свойства
-
-        /// <summary>
-        /// Таблица данных.
-        /// </summary>
-        public System.Data.DataTable DataTableObject { get; private set; }
-
-        /// <summary>
-        /// Полное имя файла с таблицей данных.
-        /// </summary>
-        private readonly string _fullFileName;
-
-        /// <summary>
-        /// Имя файла с таблицей данных.
-        /// </summary>
-        private readonly string _fileName;
-
-        /// <summary>
-        /// Имя таблицы данных.
-        /// </summary>
-        private readonly string _tableName;
-
-        #endregion
-
         #region События
 
         /// <summary>
@@ -84,135 +59,123 @@ namespace CADToolsCore.DataTable
         /// <summary>
         /// Новый экземпляр класса.
         /// </summary>
-        /// <param name="fullFileName">Полное имя файла с таблицей данных.</param>
-        /// <param name="tableName">Имя таблицы данных.</param>
-        public XMLDataTableReadWrite(string fullFileName, string tableName)
-        {
-            _fullFileName = fullFileName ?? string.Empty;
-            try
-            {
-                _fileName = System.IO.Path.GetFileName(_fullFileName);
-            }
-            catch (System.ArgumentException)
-            {
-                _fileName = string.Empty;
-            }
-            _tableName = tableName ?? string.Empty;
-        }
+        public XMLDataTableReadWrite() { }
 
         #endregion
 
         #region Методы
 
         /// <summary>
-        /// Возвращает таблицу данных из файла, указанного при создании экземпляра класса.
+        /// Возвращает таблицу данных из указанных значений столбцов.
         /// </summary>
+        /// <param name="columnsValues">Набор значений в таблице по столбцам.</param>
+        /// <param name="columnsNames">Имена столбцов в таблице данных.</param>
+        /// <param name="tableName">Имя таблицы данных.</param>
         /// <returns></returns>
-        public System.Data.DataTable GetDataTable()
+        public System.Data.DataTable DataTableFromColumnValues(List<string[]> columnsValues, string[] columnsNames, string tableName)
         {
-            System.Data.DataTable resultValue = new System.Data.DataTable();
-            if (FileManager.CheckFileExists(_fullFileName))
+            System.Data.DataTable resultTable = new System.Data.DataTable
+            {
+                TableName = tableName ?? string.Empty
+            };
+            if ((columnsValues == null) || (columnsNames == null))
+            {
+                return resultTable;
+            }
+            // Создание столбцов.
+            resultTable.Columns.AddRange(columnsNames.Select(colName => new DataColumn(colName, typeof(string))).ToArray());
+            // Для правильного заполнения строк таблицы необходимо определить наибольшую длину строкового массива в наборе.
+            int rowCount = columnsValues.Select(arrayObj => arrayObj?.Count() ?? 0).Max();
+            // Добавление в таблицу строк с пустыми ячейками.
+            for (int index = 0; index < rowCount; index++)
+            {
+                resultTable.Rows.Add(resultTable.NewRow());
+            }
+            // Заполнение таблицы по столбцам.
+            int columnCount = System.Math.Min(columnsValues.Count, columnsNames.Count());
+            for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+            {
+                string[] columnValuesArray = columnsValues[columnIndex] ?? new string[] { };
+                for (int rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
+                {
+                    resultTable.Rows[rowIndex][columnIndex] = columnValuesArray[rowIndex];
+                }
+            }
+            return resultTable;
+        }
+
+        /// <summary>
+        /// Возвращает таблицу данных из указанных значений строк.
+        /// </summary>
+        /// <param name="rowsValues">Набор значений в таблице по строкам.</param>
+        /// <param name="columnsNames">Имена столбцов в таблице данных.</param>
+        /// <param name="tableName">Имя таблицы данных.</param>
+        /// <returns></returns>
+        public System.Data.DataTable DataTableFromRowValues(List<string[]> rowsValues, string[] columnsNames, string tableName)
+        {
+            System.Data.DataTable resultTable = new System.Data.DataTable
+            {
+                TableName = tableName ?? string.Empty
+            };
+            if ((rowsValues == null) || (columnsNames == null))
+            {
+                return resultTable;
+            }
+            // Создание столбцов.
+            resultTable.Columns.AddRange(columnsNames.Select(colName => new DataColumn(colName, typeof(string))).ToArray());
+            // Заполнение строк таблицы. В случае необходимости добавляются недостающие столбцы.
+            for (int rowIndex = 0; rowIndex < rowsValues.Count(); rowIndex++)
+            {
+                if ((rowsValues[rowIndex]?.Count() ?? 0) > resultTable.Columns.Count)
+                {
+                    resultTable.Columns.Add();
+                }
+                resultTable.Rows.Add(rowsValues[rowIndex] ?? new string[] { });
+            }
+            return resultTable;
+        }
+
+        /// <summary>
+        /// Возвращает таблицу данных из указанного файла.
+        /// </summary>
+        /// <param name="fullFileName">Полное имя файла.</param>
+        /// <param name="tableName">Имя таблицы данных.</param>
+        /// <returns></returns>
+        public System.Data.DataTable ReadDataTable(string fullFileName, string tableName)
+        {
+            System.Data.DataTable resultTable = new System.Data.DataTable();
+            if (FileManager.CheckFileExists(fullFileName))
             {
                 try
                 {
-                    DataTableObject.ReadXml(_fullFileName);
-                    DataTableObject.TableName = _tableName;
+                    resultTable.ReadXml(fullFileName);
+                    resultTable.TableName = tableName;
                     OnDataLoaded();
                 }
                 catch (System.Exception)
                 {
-                    FileManager.ShowOpenFileError(_fileName);
+                    FileManager.ShowOpenFileError(fullFileName);
                 }
             }
-            return resultValue;
+            return resultTable;
         }
 
         /// <summary>
-        /// Сохраняет таблицу данных в файл, указанный при создании экземпляра класса.
+        /// Сохраняет таблицу данных в указанный файл.
         /// </summary>
-        public virtual void SaveDataTable()
+        /// <param name="dataTable">Таблица данных.</param>
+        /// <param name="fullFileName">Полное имя файла.</param>
+        public void WriteDataTable(System.Data.DataTable dataTable, string fullFileName)
         {
             try
             {
-                DataTableObject.WriteXml(_fullFileName);
+                dataTable.WriteXml(fullFileName);
                 OnDataSaved();
             }
             catch (System.Exception)
             {
-                FileManager.ShowSaveFileError(_fileName);
+                FileManager.ShowSaveFileError(fullFileName);
             }
-        }
-
-        /// <summary>
-        /// Сохраняет таблицу данных в файл, указанный при создании экземпляра класса.
-        /// </summary>
-        /// <param name="dataTable">Таблица данных.</param>
-        public virtual void SaveDataTable(System.Data.DataTable dataTable)
-        {
-            DataTableObject = dataTable ?? new System.Data.DataTable();
-            DataTableObject.TableName = _tableName;
-            SaveDataTable();
-        }
-
-        /// <summary>
-        /// Сохраняет таблицу данных в файл, указанный при создании экземпляра класса.
-        /// </summary>
-        /// <param name="columnNames">Имена столбцов в таблице данных.</param>
-        /// <param name="columnValues">Набор значений в таблице по столбцам.</param>
-        public void SaveDataTableFromColumnValues(string[] columnNames, List<string[]> columnValues)
-        {
-            System.Data.DataTable resultDataTable = new System.Data.DataTable
-            {
-                TableName = _tableName
-            };
-            // Создание столбцов.
-            resultDataTable.Columns.AddRange(columnNames?.Select(colName => new DataColumn(colName)).ToArray() ?? new DataColumn[] { });
-            // Для правильного заполнения строк таблицы необходимо определить наибольшую длину строкового массива в наборе.
-            int rowCount = columnValues?.Select(arrayObj => arrayObj?.Count() ?? 0).Max() ?? 0;
-            // Добавление в таблицу строк с пустыми ячейками.
-            for (int index = 0; index < rowCount; index++)
-            {
-                resultDataTable.Rows.Add(columnNames?.Select(value => string.Empty) ?? new string[] { });
-            }
-            // Заполнение таблицы по столбцам.
-            for (int columnIndex = 0; columnIndex < (columnNames?.Count() ?? 0); columnIndex++)
-            {
-                string[] columnValuesArray = columnValues?[columnIndex] ?? new string[] { };
-                for (int rowIndex = 0; rowIndex < columnValuesArray.Count(); rowIndex++)
-                {
-                    resultDataTable.Rows[rowIndex][columnIndex] = columnValuesArray[rowIndex];
-                }
-            }
-            // Запись таблицы данных в файл.
-            DataTableObject = resultDataTable;
-            SaveDataTable();
-        }
-
-        /// <summary>
-        /// Сохраняет таблицу данных в файл, указанный при создании экземпляра класса.
-        /// </summary>
-        /// <param name="columnNames">Имена столбцов в таблице данных.</param>
-        /// <param name="rowValues">Набор значений в таблице по строкам.</param>
-        public void SaveDataTableFromRowValues(string[] columnNames, List<string[]> rowValues)
-        {
-            System.Data.DataTable resultDataTable = new System.Data.DataTable
-            {
-                TableName = _tableName
-            };
-            // Создание столбцов.
-            resultDataTable.Columns.AddRange(columnNames?.Select(colName => new DataColumn(colName)).ToArray() ?? new DataColumn[] { });
-            // Заполнение строк таблицы. В случае необходимости добавляются недостающие столбцы.
-            for (int rowIndex = 0; rowIndex < (rowValues?.Count() ?? 0); rowIndex++)
-            {
-                if ((rowValues[rowIndex]?.Count() ?? 0) > resultDataTable.Columns.Count)
-                {
-                    resultDataTable.Columns.Add(string.Empty);
-                }
-                resultDataTable.Rows.Add(rowValues[rowIndex] ?? new string[] { });
-            }
-            // Запись таблицы данных в файл.
-            DataTableObject = resultDataTable;
-            SaveDataTable();
         }
 
         #endregion

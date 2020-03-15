@@ -22,7 +22,6 @@ using CADToolsCore.Utils;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace CADToolsCore.DataTable
 {
@@ -109,7 +108,7 @@ namespace CADToolsCore.DataTable
                 }
             }
             // Очистка исходной таблицы и заполнение ее новыми данными.
-            FillDataTableRows(true, newRowsValues);
+            FillDataTableRows(newRowsValues);
             UpdateSourceValuesList();
         }
 
@@ -123,7 +122,7 @@ namespace CADToolsCore.DataTable
         /// Перемещает строки в конец таблицы.
         /// </summary>
         /// <param name="rowIndices">Индексы перемещаемых строк.</param>
-        public void MoveRowsToEnd(int[] rowIndices) => MoveRows(_sourceRowsValues.Count - 1 - rowIndices?.Last() ?? 0, rowIndices);
+        public void MoveRowsToEnd(int[] rowIndices) => MoveRows(_sourceRowsValues.Count - 1 - (rowIndices?.Last() ?? 0), rowIndices);
 
         /// <summary>
         /// Сортирует строки таблицы по значениям ячеек в указанном столбце.
@@ -136,16 +135,16 @@ namespace CADToolsCore.DataTable
             // 2) берется первое значение из отсортированного списка, из таблицы выбираются все строки, в которых значения ячеек
             //    в указанном столбце совпадают с первым значением отсортированного списка. Найденные строки заносятся в итоговый список.
             // 3) аналогично выполняется заполнение остальных строк таблицы.
-            List<object> sortedColumnValues = new List<object>(GetColumnValues(columnIndex));
+            List<string> sortedColumnValues = new List<string>(GetColumnValues(columnIndex));
             sortedColumnValues = sortedColumnValues.Distinct().ToList();
             sortedColumnValues.Sort();
             List<object[]> sortedRowsValues = new List<object[]>();
             for (int index = 0; index < sortedColumnValues.Count; index++)
             {
-                sortedRowsValues.AddRange(_sourceRowsValues.Where(values => values[index] == sortedColumnValues[index]));
+                sortedRowsValues.AddRange(_sourceRowsValues.Where(values => values[columnIndex].ToString() == sortedColumnValues[index]));
             }
             // Очистка исходной таблицы и заполнение ее новыми данными.
-            FillDataTableRows(true, sortedRowsValues);
+            FillDataTableRows(sortedRowsValues);
             UpdateSourceValuesList();
         }
 
@@ -166,7 +165,7 @@ namespace CADToolsCore.DataTable
         /// </summary>
         public void ReverseRows()
         {
-            FillDataTableRows(true, _sourceRowsValues.Reverse<object[]>().ToList());
+            FillDataTableRows(_sourceRowsValues.Reverse<object[]>().ToList());
             UpdateSourceValuesList();
         }
 
@@ -192,7 +191,7 @@ namespace CADToolsCore.DataTable
         {
             rowIndices = AbsIndices.GetIndices(rowIndices);
             // При непосредственном удалении строк после удаления первой же выделенной строки индексы остальных строк изменяются,
-            // что потребует сложной логики для сохранения правильных индексов.
+            // что потребует сложной логики для отслеживания индексов.
             // Вместо этого итоговая таблица получается следующим образом:
             // 1) исходная таблица очищается (при этом значения ячеек остаются в резервной переменной _sourceRowsValues).
             // 2) из резервной переменной в таблицу копируются только те строки, индексы которых не совпадают с индексами выбранных для удаления строк.
@@ -221,10 +220,10 @@ namespace CADToolsCore.DataTable
         public virtual string[] GetColumnValues(DataColumn dataColumn, bool removeEmptyValues = false)
         {
             List<string> resultValue = new List<string>();
-            System.Data.DataTable dataTableObject = dataColumn?.Table ?? new System.Data.DataTable();
-            for (int rowIndex = 0; rowIndex < dataTableObject.Rows.Count; rowIndex++)
+            System.Data.DataTable dataTable = dataColumn?.Table ?? new System.Data.DataTable();
+            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
             {
-                object checkValue = dataTableObject.Rows[rowIndex][dataColumn];
+                object checkValue = dataTable.Rows[rowIndex][dataColumn];
                 string cellValue = checkValue?.ToString() ?? string.Empty;
                 if (removeEmptyValues & string.IsNullOrEmpty(cellValue))
                 {
@@ -305,9 +304,9 @@ namespace CADToolsCore.DataTable
         /// <summary>
         /// Заполняет таблицу данными.
         /// </summary>
-        /// <param name="clearTable">Выполнить очистку таблицы перед заполнением.</param>
         /// <param name="rowsValues">Список значений ячеек строк исходной таблицы.</param>
-        private void FillDataTableRows(bool clearTable, List<object[]> rowsValues)
+        /// <param name="clearTable">Выполнить очистку таблицы перед заполнением.</param>
+        private void FillDataTableRows(List<object[]> rowsValues, bool clearTable = true)
         {
             if (clearTable)
             {
